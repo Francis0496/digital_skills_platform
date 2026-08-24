@@ -24,7 +24,39 @@ function connectMenu(buttonSelector, menuId, openDisplayClass) {
 }
 
 connectMenu(".mobile-menu-button", "mobile-menu");
-connectMenu(".dashboard-menu-button", "dashboard-sidebar", "block");
+
+function connectDashboardDrawer() {
+    const button = document.querySelector(".dashboard-menu-button");
+    const sidebar = document.getElementById("dashboard-sidebar");
+    const backdrop = document.getElementById("dashboard-backdrop");
+    if (!button || !sidebar || !backdrop) return;
+
+    const close = () => {
+        button.setAttribute("aria-expanded", "false");
+        sidebar.classList.add("hidden");
+        sidebar.classList.remove("block");
+        backdrop.classList.add("hidden");
+    };
+    button.addEventListener("click", () => {
+        const opening = button.getAttribute("aria-expanded") !== "true";
+        if (!opening) return close();
+        button.setAttribute("aria-expanded", "true");
+        sidebar.classList.remove("hidden");
+        sidebar.classList.add("block");
+        backdrop.classList.remove("hidden");
+        sidebar.querySelector("a, button")?.focus();
+    });
+    backdrop.addEventListener("click", close);
+    sidebar.querySelectorAll("a").forEach((link) => link.addEventListener("click", close));
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && button.getAttribute("aria-expanded") === "true") {
+            close();
+            button.focus();
+        }
+    });
+}
+
+connectDashboardDrawer();
 
 document.querySelectorAll("form[data-confirm]").forEach((form) => {
     form.addEventListener("submit", (event) => {

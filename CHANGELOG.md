@@ -4,6 +4,21 @@ All significant project changes should be recorded by increment.
 
 ## Unreleased
 
+### Batch 2: Freelancer/Learner UI/UX Refinement
+Status: Completed
+
+Improved:
+- Rebuilt the learner dashboard around live course, application, portfolio, mentorship, opportunity, and notification data.
+- Standardized authenticated learner navigation with a persistent desktop sidebar and accessible mobile drawer.
+- Refined profile and skills presentation while preserving existing fields and secure upload behavior.
+- Improved course cards, progress presentation, learning navigation, and mobile lesson usability.
+- Strengthened portfolio project presentation and owner-focused empty-state actions.
+- Refined opportunity, application, mentor discovery, mentorship request, and notification interfaces.
+- Added responsive learner layouts, consistent iconography, compact cards, and accessible native progress indicators.
+
+Scope:
+- No model, migration, schema, business-rule, authentication, authorization, or deployment changes were introduced.
+
 ### Batch 1: Branding and Global UI/UX Refinement
 Status: Completed
 

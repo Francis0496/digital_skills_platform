@@ -81,18 +81,21 @@ def test_design_03_dashboard_navigation_matches_role(
     assert b'aria-controls="dashboard-sidebar"' in response.data
 
 
-def test_design_04_unimplemented_dashboard_items_are_not_links(client, user_factory):
+def test_design_04_learner_dashboard_uses_complete_task_navigation(client, user_factory):
     user_factory()
     response = login(client)
 
-    assert b'<span class="sidebar-link sidebar-link-disabled"' in response.data
-    assert b"Coming in a later increment" in response.data
+    for label in (b"Dashboard", b"Profile", b"Skills", b"My Courses", b"Portfolio", b"Opportunities", b"My Applications", b"Mentors", b"Mentorship", b"Notifications"):
+        assert label in response.data
+    assert b"Coming in a later increment" not in response.data
+    assert b"Settings" not in response.data
+    assert b"learner-sidebar" in response.data
 
 
 def test_design_05_reusable_component_styles_are_served(client):
     response = client.get("/static/css/app.css")
     assert response.status_code == 200
-    for component in (b".btn-primary", b".form-input", b".card", b".badge", b".alert"):
+    for component in (b".btn-primary", b".form-input", b".card", b".badge", b".alert", b".learner-stat-grid", b".progress-track"):
         assert component in response.data
     for responsive_rule in (
         b".desktop-navigation { display: none",

@@ -1,46 +1,44 @@
 {% extends "base.html" %}
-
+{% from "components/icon.html" import icon %}
+{% macro learner_link(endpoint, label, icon_name, active=false) %}
+<a class="learner-nav-link {{ 'learner-nav-link-active' if active }}" href="{{ url_for(endpoint) }}"{% if active %} aria-current="page"{% endif %}>{{ icon(icon_name) }}<span>{{ label }}</span></a>
+{% endmacro %}
 {% block content %}
-<div class="mx-auto flex max-w-7xl gap-0 px-0 sm:px-6 lg:gap-8">
-    <aside id="dashboard-sidebar" class="hidden w-64 shrink-0 border-r border-slate-200 bg-white p-4 lg:block lg:border-r-0 lg:bg-transparent lg:py-8" aria-label="{{ current_user.role_name | title }} navigation">
+<div class="dashboard-shell {{ 'learner-shell' if current_user.role_name == 'freelancer' }}">
+    <button id="dashboard-backdrop" class="dashboard-backdrop hidden lg:hidden" type="button" aria-label="Close dashboard navigation"></button>
+    <aside id="dashboard-sidebar" class="dashboard-sidebar hidden lg:block {{ 'learner-sidebar' if current_user.role_name == 'freelancer' }}" aria-label="{{ current_user.role_name | title }} navigation">
+        {% if current_user.role_name == 'freelancer' %}
+        <div class="learner-sidebar-heading"><span class="learner-sidebar-avatar">{{ current_user.full_name[:1]|upper }}</span><div><strong>{{ current_user.full_name }}</strong><span>Freelancer</span></div></div>
+        <nav class="learner-navigation">
+            {{ learner_link('users.dashboard', 'Dashboard', 'dashboard', request.endpoint == 'users.dashboard') }}
+            {{ learner_link('users.profile', 'Profile', 'user', request.endpoint in ['users.profile','users.edit_profile']) }}
+            {{ learner_link('users.skills', 'Skills', 'skills', request.endpoint in ['users.skills','users.remove_skill']) }}
+            {{ learner_link('courses.my_courses', 'My Courses', 'book', request.endpoint in ['courses.my_courses','courses.learn']) }}
+            {{ learner_link('portfolio.mine', 'Portfolio', 'folder', request.endpoint and request.endpoint.startswith('portfolio.')) }}
+            {{ learner_link('opportunities.catalogue', 'Opportunities', 'briefcase', request.endpoint and request.endpoint.startswith('opportunities.')) }}
+            {{ learner_link('applications.mine', 'My Applications', 'document', request.endpoint and request.endpoint.startswith('applications.')) }}
+            {{ learner_link('mentorship.directory', 'Mentors', 'users', request.endpoint in ['mentorship.directory','mentorship.mentor_detail']) }}
+            {{ learner_link('mentorship.my_requests', 'Mentorship', 'users', request.endpoint in ['mentorship.my_requests','mentorship.request_mentor']) }}
+            {{ learner_link('notifications.index', 'Notifications', 'bell', request.endpoint and request.endpoint.startswith('notifications.')) }}
+        </nav>
+        <form class="learner-sidebar-logout" method="post" action="{{ url_for('auth.logout') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button type="submit">{{ icon('arrow') }}<span>Log out</span></button></form>
+        {% else %}
         <p class="mb-3 px-3 text-xs font-bold uppercase tracking-wider text-slate-500">{{ current_user.role_name | title }}</p>
         <nav class="space-y-1">
-            <a class="sidebar-link {{ 'sidebar-link-active' if request.endpoint == 'users.dashboard' else 'text-slate-700 hover:bg-slate-100' }}" href="{{ url_for('users.dashboard') }}"{% if request.endpoint == 'users.dashboard' %} aria-current="page"{% endif %}>Dashboard</a>
-            <a class="sidebar-link {{ 'sidebar-link-active' if request.endpoint and request.endpoint.startswith('notifications.') else 'text-slate-700 hover:bg-slate-100' }}" href="{{ url_for('notifications.index') }}">Notifications</a>
-            {% if current_user.role_name == 'freelancer' %}
-                <a class="sidebar-link {{ 'sidebar-link-active' if request.endpoint in ['users.profile', 'users.edit_profile'] else 'text-slate-700 hover:bg-slate-100' }}" href="{{ url_for('users.profile') }}">Profile</a>
-                <a class="sidebar-link {{ 'sidebar-link-active' if request.endpoint in ['users.skills', 'users.remove_skill'] else 'text-slate-700 hover:bg-slate-100' }}" href="{{ url_for('users.skills') }}">Skills</a>
-                <a class="sidebar-link {{ 'sidebar-link-active' if request.endpoint in ['courses.my_courses', 'courses.learn'] else 'text-slate-700 hover:bg-slate-100' }}" href="{{ url_for('courses.my_courses') }}">My Courses</a>
-                <a class="sidebar-link text-slate-700 hover:bg-slate-100" href="{{ url_for('courses.catalogue') }}">Browse Courses</a>
-                <a class="sidebar-link {{ 'sidebar-link-active' if request.endpoint and request.endpoint.startswith('portfolio.') else 'text-slate-700 hover:bg-slate-100' }}" href="{{ url_for('portfolio.mine') }}">Portfolio</a>
-                <a class="sidebar-link text-slate-700 hover:bg-slate-100" href="{{ url_for('opportunities.catalogue') }}">Browse Opportunities</a><a class="sidebar-link {{ 'sidebar-link-active' if request.endpoint == 'applications.mine' else 'text-slate-700 hover:bg-slate-100' }}" href="{{ url_for('applications.mine') }}">My Applications</a>
-                <a class="sidebar-link text-slate-700 hover:bg-slate-100" href="{{ url_for('mentorship.directory') }}">Mentors</a><a class="sidebar-link text-slate-700 hover:bg-slate-100" href="{{ url_for('mentorship.my_requests') }}">Mentorship Requests</a>
-                {% set items = ['Settings'] %}
-            {% elif current_user.role_name == 'mentor' %}
-                <a class="sidebar-link {{ 'sidebar-link-active' if request.endpoint in ['users.profile', 'users.edit_profile'] else 'text-slate-700 hover:bg-slate-100' }}" href="{{ url_for('users.profile') }}">Profile</a>
-                <a class="sidebar-link {{ 'sidebar-link-active' if request.endpoint == 'users.edit_mentor_profile' else 'text-slate-700 hover:bg-slate-100' }}" href="{{ url_for('users.edit_mentor_profile') }}">Mentor Profile</a>
-                <a class="sidebar-link text-slate-700 hover:bg-slate-100" href="{{ url_for('mentorship.received_requests') }}">Mentorship Requests</a><a class="sidebar-link text-slate-700 hover:bg-slate-100" href="{{ url_for('mentorship.mentees') }}">My Mentees</a>
-                {% set items = ['Settings'] %}
+            <a class="sidebar-link {{ 'sidebar-link-active' if request.endpoint == 'users.dashboard' else 'text-slate-700 hover:bg-slate-100' }}" href="{{ url_for('users.dashboard') }}">Dashboard</a>
+            <a class="sidebar-link" href="{{ url_for('notifications.index') }}">Notifications</a>
+            {% if current_user.role_name == 'mentor' %}
+            <a class="sidebar-link" href="{{ url_for('users.profile') }}">Profile</a><a class="sidebar-link" href="{{ url_for('users.edit_mentor_profile') }}">Mentor Profile</a><a class="sidebar-link" href="{{ url_for('mentorship.received_requests') }}">Mentorship Requests</a><a class="sidebar-link" href="{{ url_for('mentorship.mentees') }}">My Mentees</a>
             {% elif current_user.role_name == 'client' %}
-                <a class="sidebar-link {{ 'sidebar-link-active' if request.endpoint in ['users.profile', 'users.edit_profile'] else 'text-slate-700 hover:bg-slate-100' }}" href="{{ url_for('users.profile') }}">Client Profile</a>
-                <a class="sidebar-link text-slate-700 hover:bg-slate-100" href="{{ url_for('opportunities.create') }}">Post Opportunity</a><a class="sidebar-link {{ 'sidebar-link-active' if request.endpoint == 'opportunities.mine' else 'text-slate-700 hover:bg-slate-100' }}" href="{{ url_for('opportunities.mine') }}">My Opportunities</a>
-                {% set items = ['Settings'] %}
+            <a class="sidebar-link" href="{{ url_for('users.profile') }}">Client Profile</a><a class="sidebar-link" href="{{ url_for('opportunities.create') }}">Post Opportunity</a><a class="sidebar-link" href="{{ url_for('opportunities.mine') }}">My Opportunities</a>
             {% else %}
-                <a class="sidebar-link {{ 'sidebar-link-active' if request.endpoint in ['users.profile', 'users.edit_profile'] else 'text-slate-700 hover:bg-slate-100' }}" href="{{ url_for('users.profile') }}">Profile</a>
-                <a class="sidebar-link {{ 'sidebar-link-active' if request.endpoint == 'admin.dashboard' else 'text-slate-700 hover:bg-slate-100' }}" href="{{ url_for('admin.dashboard') }}">Statistics Dashboard</a><a class="sidebar-link text-slate-700 hover:bg-slate-100" href="{{ url_for('admin.users') }}">Users</a><a class="sidebar-link text-slate-700 hover:bg-slate-100" href="{{ url_for('admin.skills') }}">Skills</a><a class="sidebar-link text-slate-700 hover:bg-slate-100" href="{{ url_for('admin.learning') }}">Learning Content</a>
-                <a class="sidebar-link text-slate-700 hover:bg-slate-100" href="{{ url_for('opportunities.oversight') }}">Opportunities</a>
-                <a class="sidebar-link text-slate-700 hover:bg-slate-100" href="{{ url_for('applications.oversight') }}">Applications</a>
-                <a class="sidebar-link text-slate-700 hover:bg-slate-100" href="{{ url_for('admin.mentorships') }}">Mentorships</a>
-                {% set items = ['Settings'] %}
+            <a class="sidebar-link" href="{{ url_for('users.profile') }}">Profile</a><a class="sidebar-link" href="{{ url_for('admin.dashboard') }}">Statistics Dashboard</a><a class="sidebar-link" href="{{ url_for('admin.users') }}">Users</a><a class="sidebar-link" href="{{ url_for('admin.skills') }}">Skills</a><a class="sidebar-link" href="{{ url_for('admin.learning') }}">Learning Content</a><a class="sidebar-link" href="{{ url_for('opportunities.oversight') }}">Opportunities</a><a class="sidebar-link" href="{{ url_for('applications.oversight') }}">Applications</a><a class="sidebar-link" href="{{ url_for('admin.mentorships') }}">Mentorships</a>
             {% endif %}
-            {% for item in items %}
-                <span class="sidebar-link sidebar-link-disabled" aria-disabled="true" title="Coming in a later increment">{{ item }}</span>
-            {% endfor %}
         </nav>
+        {% endif %}
     </aside>
-
-    <section class="min-w-0 flex-1 px-4 py-6 sm:px-0 lg:py-8">
-        <button class="dashboard-menu-button btn-secondary mb-5 lg:hidden" type="button" aria-controls="dashboard-sidebar" aria-expanded="false">Menu</button>
+    <section class="dashboard-content">
+        <button class="dashboard-menu-button btn-secondary mb-5 lg:hidden" type="button" aria-controls="dashboard-sidebar" aria-expanded="false">{{ icon('dashboard') }}<span>Menu</span></button>
         {% block dashboard_content %}{% endblock %}
     </section>
 </div>

@@ -78,6 +78,7 @@
       {% if owner %}Add your first project to demonstrate your work.{% else
       %}This freelancer has not added projects yet.{% endif %}
     </p>
+    {% if owner %}<a class="btn-primary mt-5" href="{{ url_for('portfolio.create_project') }}">Add your first project</a>{% endif %}
   </div>
   {% endif %}
 </section>

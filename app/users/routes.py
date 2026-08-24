@@ -1,5 +1,6 @@
 from pathlib import Path
 from uuid import uuid4
+from datetime import date
 
 from flask import (
     abort,
@@ -16,7 +17,17 @@ from sqlalchemy.exc import IntegrityError
 
 from app.auth.decorators import roles_required
 from app.extensions import db
-from app.models import MentorProfile, Skill, User, UserSkill
+from app.models import (
+    FreelanceOpportunity,
+    JobApplication,
+    MentorProfile,
+    Mentorship,
+    MentorshipRequest,
+    Notification,
+    Skill,
+    User,
+    UserSkill,
+)
 from . import bp
 from .forms import ConfirmForm, MentorProfileForm, ProfileForm, SkillForm
 
@@ -56,9 +67,71 @@ DASHBOARD_CONTENT = {
 @bp.get("/dashboard")
 @login_required
 def dashboard():
-    return render_template(
-        "users/dashboard.html", dashboard=DASHBOARD_CONTENT[current_user.role_name]
-    )
+    context = {"dashboard": DASHBOARD_CONTENT[current_user.role_name]}
+    if current_user.role_name == "freelancer":
+        enrollments = sorted(
+            current_user.enrollments,
+            key=lambda item: item.enrolled_at,
+            reverse=True,
+        )
+        applications = db.session.scalars(
+            db.select(JobApplication)
+            .where(JobApplication.freelancer_id == current_user.id)
+            .order_by(JobApplication.submitted_at.desc())
+        ).all()
+        active_mentorships = db.session.scalar(
+            db.select(db.func.count(Mentorship.id)).where(
+                Mentorship.freelancer_id == current_user.id,
+                Mentorship.status == "active",
+            )
+        )
+        mentorship_requests = db.session.scalar(
+            db.select(db.func.count(MentorshipRequest.id)).where(
+                MentorshipRequest.freelancer_id == current_user.id,
+                MentorshipRequest.status == "pending",
+            )
+        )
+        recent_opportunities = db.session.scalars(
+            db.select(FreelanceOpportunity)
+            .where(
+                FreelanceOpportunity.status == "active",
+                db.or_(
+                    FreelanceOpportunity.deadline.is_(None),
+                    FreelanceOpportunity.deadline >= date.today(),
+                ),
+            )
+            .order_by(FreelanceOpportunity.created_at.desc())
+            .limit(3)
+        ).all()
+        recent_notifications = db.session.scalars(
+            db.select(Notification)
+            .where(Notification.user_id == current_user.id)
+            .order_by(Notification.created_at.desc())
+            .limit(4)
+        ).all()
+        context.update(
+            enrollments=enrollments,
+            continue_enrollment=next(
+                (
+                    item
+                    for item in enrollments
+                    if item.completion_status != "completed" and item.course.lessons
+                ),
+                None,
+            ),
+            applications=applications,
+            active_application_count=sum(
+                item.status in {"pending", "under_review"} for item in applications
+            ),
+            active_mentorships=active_mentorships,
+            mentorship_requests=mentorship_requests,
+            recent_opportunities=recent_opportunities,
+            recent_notifications=recent_notifications,
+            project_count=len(current_user.portfolio.projects)
+            if current_user.portfolio
+            else 0,
+        )
+    return render_template("users/dashboard.html", **context)
 
 
 @bp.get("/profile")
