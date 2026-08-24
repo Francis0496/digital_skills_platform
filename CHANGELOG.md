@@ -4,6 +4,10 @@ All significant project changes should be recorded by increment.
 
 ## Unreleased
 
+### Opportunity Oversight Action Correction
+
+- Rebalanced client opportunity management cards so actions wrap cleanly at compact desktop widths and remain content-sized in a dedicated wide-screen action column.
+
 ### Leone Currency Presentation
 
 - Added explicit `SLE` formatting to opportunity-detail budgets and labelled opportunity/application amount fields in Sierra Leonean leones.

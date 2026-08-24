@@ -224,7 +224,8 @@ h1, h2, h3, h4, p, li, dd, dt, a { overflow-wrap: anywhere; }
 .client-opportunity-card dl { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: .8rem; margin-top: 1rem; }
 .client-opportunity-card dt, .application-content dt { color: #94a3b8; font-size: .7rem; font-weight: 700; text-transform: uppercase; }
 .client-opportunity-card dd, .application-content dd { color: #334155; font-size: .8rem; font-weight: 700; }
-.client-opportunity-actions { display: flex; flex-wrap: wrap; gap: .6rem; }
+.client-opportunity-actions { display: flex; width: 100%; flex-wrap: wrap; gap: .6rem; }
+.client-opportunity-actions > a, .client-opportunity-actions > form, .client-opportunity-actions > form > button { flex: none; white-space: nowrap; }
 .opportunity-form-shell { max-width: 50rem; }
 .opportunity-form-shell header h1 { margin-top: .35rem; font-size: 2rem; font-weight: 800; }
 .opportunity-form-shell header > p:last-child { margin-top: .6rem; color: #64748b; }
@@ -318,9 +319,9 @@ h1, h2, h3, h4, p, li, dd, dt, a { overflow-wrap: anywhere; }
     .mentor-card-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
     .notification-center-header, .notification-center-card { flex-direction: row; align-items: flex-start; justify-content: space-between; }
     .request-actions { flex-direction: row; align-items: end; justify-content: space-between; }
-    .client-opportunity-card { flex-direction: row; align-items: center; justify-content: space-between; }
-    .client-opportunity-main { flex: 1; }
-    .client-opportunity-actions { max-width: 19rem; justify-content: flex-end; }
+    .client-opportunity-card { flex-direction: column; align-items: stretch; }
+    .client-opportunity-main { width: 100%; flex: 1; }
+    .client-opportunity-actions { max-width: none; justify-content: flex-start; }
     .form-actions { flex-direction: row; justify-content: flex-end; }
     .application-review-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
     .admin-stat-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
@@ -409,6 +410,8 @@ h1, h2, h3, h4, p, li, dd, dt, a { overflow-wrap: anywhere; }
     .admin-learning-grid .admin-learning-records > article { flex-direction: row; align-items: center; }
     .admin-learning-grid .admin-record-actions { width: auto; justify-content: flex-end; }
     .admin-learning-action { min-width: 6rem; }
+    .client-opportunity-card { display: grid; grid-template-columns: minmax(18rem,1fr) auto; align-items: center; }
+    .client-opportunity-actions { width: auto; justify-content: flex-end; }
 }
 
 @media (prefers-reduced-motion: reduce) {
