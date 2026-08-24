@@ -293,6 +293,7 @@ h1, h2, h3, h4, p, li, dd, dt, a { overflow-wrap: anywhere; }
 .admin-record-list h3 { font-weight: 800; }
 .admin-record-list p { margin-top: .2rem; color: #64748b; font-size: .8rem; }
 .admin-record-list article > div:last-child { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; }
+.admin-record-list > article > .btn-primary, .admin-record-list > article > .btn-secondary, .admin-record-list > article > .btn-danger { width: fit-content; flex: none; align-self: flex-start; white-space: nowrap; }
 
 @media (min-width: 640px) {
     .public-container { padding-inline: 1.5rem; }
@@ -320,6 +321,7 @@ h1, h2, h3, h4, p, li, dd, dt, a { overflow-wrap: anywhere; }
     .admin-search > div { flex-direction: row; align-items: center; }
     .admin-search .form-input { width: auto; flex: 1 1 14rem; }
     .admin-record-list > article { flex-direction: row; align-items: center; justify-content: space-between; }
+    .admin-record-list > article > .btn-primary, .admin-record-list > article > .btn-secondary, .admin-record-list > article > .btn-danger { align-self: center; }
     .application-review-footer { flex-direction: row; align-items: center; justify-content: space-between; }
 }
 
