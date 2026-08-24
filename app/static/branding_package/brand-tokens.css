@@ -1,0 +1,17 @@
+:root {
+  --brand-primary: #4F46E5;
+  --brand-primary-dark: #3730A3;
+  --brand-navy: #0F172A;
+  --brand-teal: #14B8A6;
+  --brand-sky: #0EA5E9;
+  --brand-amber: #F59E0B;
+  --brand-success: #10B981;
+  --brand-danger: #EF4444;
+  --brand-text: #111827;
+  --brand-muted: #64748B;
+  --brand-border: #E2E8F0;
+  --brand-surface: #F8FAFC;
+  --brand-white: #FFFFFF;
+  --brand-radius-input: .5rem;
+  --brand-radius-card: .75rem;
+}

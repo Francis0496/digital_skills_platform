@@ -10,6 +10,16 @@ function connectMenu(buttonSelector, menuId, openDisplayClass) {
         button.setAttribute("aria-expanded", String(!isOpen));
         menu.classList.toggle("hidden", isOpen);
         if (openDisplayClass) menu.classList.toggle(openDisplayClass, !isOpen);
+        button.setAttribute("aria-label", isOpen ? "Open navigation menu" : "Close navigation menu");
+        button.querySelector(".menu-icon-open")?.classList.toggle("hidden", !isOpen);
+        button.querySelector(".menu-icon-close")?.classList.toggle("hidden", isOpen);
+    });
+
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && button.getAttribute("aria-expanded") === "true") {
+            button.click();
+            button.focus();
+        }
     });
 }
 

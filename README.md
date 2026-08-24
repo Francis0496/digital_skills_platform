@@ -168,6 +168,7 @@ Waitress startup instructions.
 - `app/templates/layouts/`: responsive authenticated dashboard shell
 - `app/static/css/app.css`: reusable platform design-system patterns
 - `app/static/css/tailwind.css`: compiled, minified Tailwind release asset
+- `app/static/branding_package/`: approved logo, favicon, and brand-token assets
 - Other `app/` packages: registered Blueprint skeletons for later increments
 - `app/templates/`: shared layout, home page, and error pages
 - `tests/`: isolated pytest fixtures and foundation smoke tests

@@ -1,8 +1,8 @@
 <div>
     {{ field.label(class="form-label") }}
-    {{ field(class="form-input") }}
+    {{ field(class="form-input" + (" form-input-error" if field.errors else ""), aria_invalid="true" if field.errors else "false", aria_describedby=field.id + "-errors" if field.errors else none) }}
     {% if field.errors %}
-        <ul class="form-error">
+        <ul id="{{ field.id }}-errors" class="form-error" role="alert">
             {% for error in field.errors %}<li>{{ error }}</li>{% endfor %}
         </ul>
     {% endif %}

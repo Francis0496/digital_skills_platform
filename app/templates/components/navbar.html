@@ -1,0 +1,63 @@
+<header class="site-header">
+    <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand-link" href="{{ url_for('main.index') }}" aria-label="Digital Skills Platform home">
+            <img class="brand-logo" src="{{ url_for('static', filename='branding_package/logo-full.svg') }}" alt="Digital Skills Platform">
+        </a>
+
+        {% if current_user.is_authenticated %}
+            <div class="flex items-center gap-2 sm:gap-3">
+                <a class="nav-link hidden sm:inline-flex" href="{{ url_for('users.dashboard') }}">Dashboard</a>
+                <a class="notification-link" href="{{ url_for('notifications.index') }}" aria-label="Notifications{% if unread %}, {{ unread }} unread{% endif %}">
+                    <svg class="h-5 w-5" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 17H9m9-2V11a6 6 0 1 0-12 0v4l-2 2h16l-2-2Zm-8 5h4"/>
+                    </svg>
+                    {% if unread %}<span class="notification-count">{{ unread }}</span>{% endif %}
+                </a>
+                <span class="avatar" aria-label="Signed in as {{ current_user.full_name }}">{{ current_user.full_name[:1] | upper }}</span>
+                <form method="post" action="{{ url_for('auth.logout') }}">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button class="btn-secondary px-3 sm:px-4" type="submit">Log out</button>
+                </form>
+            </div>
+        {% else %}
+            <div class="hidden items-center gap-1 lg:flex">
+                {% set public_links = [
+                    ('main.index', 'Home'),
+                    ('courses.catalogue', 'Courses'),
+                    ('opportunities.catalogue', 'Opportunities'),
+                    ('mentorship.directory', 'Mentors'),
+                    ('main.about', 'About')
+                ] %}
+                {% for endpoint, label in public_links %}
+                    {% set is_active = request.endpoint == endpoint or (endpoint.split('.')[0] == request.blueprint and endpoint != 'main.index') %}
+                    <a class="nav-link {{ 'nav-link-active' if is_active }}" href="{{ url_for(endpoint) }}"{% if is_active %} aria-current="page"{% endif %}>{{ label }}</a>
+                {% endfor %}
+                <span class="mx-2 h-6 w-px bg-slate-200" aria-hidden="true"></span>
+                <a class="nav-link" href="{{ url_for('auth.login') }}">Log in</a>
+                <a class="btn-primary ml-2" href="{{ url_for('auth.register') }}">Register</a>
+            </div>
+            <button class="mobile-menu-button menu-button lg:hidden" type="button" aria-controls="mobile-menu" aria-expanded="false" aria-label="Open navigation menu">
+                <svg class="menu-icon-open h-6 w-6" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16"/>
+                </svg>
+                <svg class="menu-icon-close hidden h-6 w-6" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" d="m6 6 12 12M18 6 6 18"/>
+                </svg>
+            </button>
+        {% endif %}
+    </nav>
+
+    {% if not current_user.is_authenticated %}
+        <div id="mobile-menu" class="mobile-menu hidden lg:hidden">
+            <nav class="flex flex-col gap-1" aria-label="Mobile navigation">
+                {% for endpoint, label in public_links %}
+                    {% set is_active = request.endpoint == endpoint or (endpoint.split('.')[0] == request.blueprint and endpoint != 'main.index') %}
+                    <a class="mobile-nav-link {{ 'mobile-nav-link-active' if is_active }}" href="{{ url_for(endpoint) }}"{% if is_active %} aria-current="page"{% endif %}>{{ label }}</a>
+                {% endfor %}
+                <div class="my-2 border-t border-slate-200"></div>
+                <a class="mobile-nav-link" href="{{ url_for('auth.login') }}">Log in</a>
+                <a class="btn-primary mt-2 w-full" href="{{ url_for('auth.register') }}">Register</a>
+            </nav>
+        </div>
+    {% endif %}
+</header>

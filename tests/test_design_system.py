@@ -14,7 +14,38 @@ def test_design_01_public_navigation_has_mobile_control(client):
     assert response.status_code == 200
     assert b'aria-controls="mobile-menu"' in response.data
     assert b"Courses" in response.data
-    assert b"coming later" in response.data
+    assert b"coming later" not in response.data.lower()
+    assert b"branding_package/logo-full.svg" in response.data
+    assert b"branding_package/favicon-32x32.png" in response.data
+    for path in (b"/courses/", b"/opportunities/", b"/mentorship/mentors", b"/about"):
+        assert path in response.data
+
+
+def test_design_01b_public_brand_assets_and_about_page_are_served(client):
+    for path in (
+        "/static/branding_package/logo-full.svg",
+        "/static/branding_package/logo-full-white.svg",
+        "/static/branding_package/favicon.ico",
+    ):
+        response = client.get(path)
+        assert response.status_code == 200
+        assert response.content_length
+
+    about = client.get("/about")
+    assert about.status_code == 200
+    assert b"A connected pathway into digital work" in about.data
+
+
+def test_design_01c_authentication_pages_use_brand_and_accessible_fields(client):
+    for path, heading in (
+        ("/auth/login", b"Welcome back"),
+        ("/auth/register", b"Join the platform"),
+    ):
+        response = client.get(path)
+        assert response.status_code == 200
+        assert b"branding_package/logo-full-white.svg" in response.data
+        assert heading in response.data
+        assert b"<label" in response.data
 
 
 def test_design_02_dashboard_requires_authentication(client):

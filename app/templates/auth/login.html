@@ -1,16 +1,34 @@
 {% extends "base.html" %}
 {% block title %}Log in | Digital Skills Platform{% endblock %}
 {% block content %}
-<section class="mx-auto max-w-lg px-4 py-14 sm:px-6">
-    <h1 class="text-3xl font-bold">Welcome back</h1>
-    <p class="mt-2 text-slate-600">Log in to continue to the platform.</p>
-    <form class="mt-8 space-y-5 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm" method="post" novalidate>
-        {{ form.hidden_tag() }}
-        {% with field=form.email %}{% include "auth/_field.html" %}{% endwith %}
-        {% with field=form.password %}{% include "auth/_field.html" %}{% endwith %}
-        <label class="flex items-center gap-2 text-sm text-slate-700">{{ form.remember_me(class="rounded border-slate-300") }} {{ form.remember_me.label.text }}</label>
-        {{ form.submit(class="btn-primary w-full") }}
-    </form>
-    <p class="mt-5 text-center text-sm text-slate-600">Need an account? <a class="font-semibold text-indigo-700" href="{{ url_for('auth.register') }}">Register</a>.</p>
+<section class="auth-shell">
+    <div class="auth-grid">
+        <div class="auth-brand-panel">
+            <img class="w-60 max-w-full" src="{{ url_for('static', filename='branding_package/logo-full-white.svg') }}" alt="Digital Skills Platform">
+            <div class="mt-auto pt-16">
+                <p class="eyebrow">Welcome back</p>
+                <h1 class="mt-4 text-4xl font-bold leading-tight text-white">Continue building your digital future.</h1>
+                <p class="mt-5 max-w-md leading-7 text-slate-300">Access your courses, portfolio, opportunities, mentorship, and notifications from one connected workspace.</p>
+            </div>
+        </div>
+        <div class="auth-form-panel">
+            <div class="w-full max-w-md">
+                <div class="lg:hidden">
+                    <img class="h-auto w-52" src="{{ url_for('static', filename='branding_package/logo-full.svg') }}" alt="Digital Skills Platform">
+                </div>
+                <p class="eyebrow-dark mt-10 lg:mt-0">Account access</p>
+                <h1 class="mt-3 text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">Welcome back</h1>
+                <p class="mt-3 text-slate-600">Enter your details to continue to the platform.</p>
+                <form class="mt-8 space-y-5" method="post" novalidate>
+                    {{ form.hidden_tag() }}
+                    {% with field=form.email %}{% include "auth/_field.html" %}{% endwith %}
+                    {% with field=form.password %}{% include "auth/_field.html" %}{% endwith %}
+                    <label class="flex min-h-11 cursor-pointer items-center gap-3 text-sm font-medium text-slate-700">{{ form.remember_me(class="h-4 w-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-600") }} {{ form.remember_me.label.text }}</label>
+                    {{ form.submit(class="btn-primary btn-large w-full") }}
+                </form>
+                <p class="mt-7 text-center text-sm text-slate-600">New to Digital Skills Platform? <a class="text-link" href="{{ url_for('auth.register') }}">Create an account</a></p>
+            </div>
+        </div>
+    </div>
 </section>
 {% endblock %}

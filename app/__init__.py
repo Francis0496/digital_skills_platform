@@ -1,5 +1,6 @@
 import logging
 import os
+from datetime import datetime, timezone
 
 from flask import Flask, flash, redirect, render_template, request, session, url_for
 from flask_login import logout_user
@@ -44,6 +45,10 @@ def create_app(config_class=None):
     register_account_checks(app)
     register_security_headers(app)
     configure_logging(app)
+
+    @app.context_processor
+    def inject_global_template_values():
+        return {"current_year": datetime.now(timezone.utc).year}
 
     return app
 

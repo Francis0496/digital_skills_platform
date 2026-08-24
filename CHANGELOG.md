@@ -4,6 +4,20 @@ All significant project changes should be recorded by increment.
 
 ## Unreleased
 
+### Batch 1: Branding and Global UI/UX Refinement
+Status: Completed
+
+Improved:
+- Integrated the approved Digital Skills Platform logo, favicon set, and brand tokens.
+- Refined the shared public navbar, active states, accessible mobile menu, flash messages, and footer.
+- Rebuilt the homepage around real courses, active opportunities, mentorship, and working platform pathways.
+- Added the specified public About page and removed obsolete homepage increment placeholders.
+- Refined login and registration with responsive branded layouts, clearer hierarchy, password guidance, and accessible validation states.
+- Standardized public buttons, cards, links, forms, icons, focus states, and responsive spacing.
+
+Scope:
+- No business workflow, authorization rule, model, migration, or database schema was changed.
+
 ### Increment 10: Hardening and Deployment
 Status: Completed
 

@@ -17,7 +17,7 @@ def test_foundation_02_home_route_returns_200(client):
 
 def test_foundation_03_home_contains_platform_name(client):
     response = client.get("/")
-    assert b"Digital Skills and Freelancing Platform" in response.data
+    assert b"Digital Skills Platform" in response.data
 
 
 def test_foundation_04_unknown_route_uses_custom_404(client):
