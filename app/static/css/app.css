@@ -270,7 +270,8 @@ h1, h2, h3, h4, p, li, dd, dt, a { overflow-wrap: anywhere; }
 .admin-quick-actions small { margin-top: .1rem; color: #64748b; font-size: .72rem; }
 .admin-search { max-width: 45rem; margin-top: 1.5rem; border: 1px solid #e2e8f0; border-radius: .75rem; background: white; padding: 1rem; }
 .admin-search > div { display: flex; flex-direction: column; gap: .65rem; margin-top: .35rem; }
-.admin-search .form-input { margin-top: 0; }
+.admin-search .form-input { min-width: 0; margin-top: 0; }
+.admin-search button, .admin-search .btn-secondary { flex: none; white-space: nowrap; }
 .admin-table-wrap { width: 100%; margin-top: 1.5rem; }
 .admin-table { width: 100%; border-collapse: separate; border-spacing: 0; }
 .admin-table thead { display: none; }
@@ -317,6 +318,7 @@ h1, h2, h3, h4, p, li, dd, dt, a { overflow-wrap: anywhere; }
     .application-review-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
     .admin-stat-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
     .admin-search > div { flex-direction: row; align-items: center; }
+    .admin-search .form-input { width: auto; flex: 1 1 14rem; }
     .admin-record-list > article { flex-direction: row; align-items: center; justify-content: space-between; }
     .application-review-footer { flex-direction: row; align-items: center; justify-content: space-between; }
 }

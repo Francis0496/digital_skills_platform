@@ -103,7 +103,7 @@ def test_design_04_learner_dashboard_uses_complete_task_navigation(client, user_
 def test_design_05_reusable_component_styles_are_served(client):
     response = client.get("/static/css/app.css")
     assert response.status_code == 200
-    for component in (b".btn-primary", b".form-input", b".card", b".badge", b".alert", b".learner-stat-grid", b".progress-track", b"@media (max-width: 479px)"):
+    for component in (b".btn-primary", b".form-input", b".card", b".badge", b".alert", b".learner-stat-grid", b".progress-track", b".admin-search button", b"@media (max-width: 479px)"):
         assert component in response.data
     for responsive_rule in (
         b".desktop-navigation { display: none",

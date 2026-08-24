@@ -6,6 +6,7 @@ All significant project changes should be recorded by increment.
 
 ### Administrator Responsive Workspace Correction
 
+- Corrected the wide-screen user-search row so its input flexes while Search and Clear remain readable, content-sized controls.
 - Routed Administrator dashboard access directly to the implemented operational overview.
 - Removed obsolete authentication, next-step, release, and Increment 9 interface wording.
 - Reworked the authenticated top bar to prevent Dashboard and Logout labels from wrapping or competing with mobile controls.
