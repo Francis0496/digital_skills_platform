@@ -4,6 +4,11 @@ All significant project changes should be recorded by increment.
 
 ## Unreleased
 
+### Responsive Dashboard Card Correction
+
+- Corrected learner summary-card breakpoints so cards remain readable beside the authenticated sidebar at compact desktop widths.
+- Constrained shared UI icons and icon tiles to prevent stretching, clipping, and text-driven overflow across display sizes.
+
 ### Batch 4: Administrator UI/UX Refinement
 Status: Completed
 

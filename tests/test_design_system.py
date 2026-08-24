@@ -102,5 +102,7 @@ def test_design_05_reusable_component_styles_are_served(client):
         b".mobile-menu-button { display: none",
         b".pathway-grid { grid-template-columns: repeat(4",
         b"box-sizing: border-box",
+        b"@media (min-width: 1280px)",
+        b"grid-template-columns: clamp(2.5rem",
     ):
         assert responsive_rule in response.data
