@@ -8,6 +8,9 @@ All significant project changes should be recorded by increment.
 
 - Corrected learner summary-card breakpoints so cards remain readable beside the authenticated sidebar at compact desktop widths.
 - Constrained shared UI icons and icon tiles to prevent stretching, clipping, and text-driven overflow across display sizes.
+- Standardized badge sizing and wrapping so status labels remain content-sized on wide screens and safe on narrow screens.
+- Hardened shared media, forms, buttons, headings, authenticated navigation, notifications, and content containers against viewport overflow.
+- Advanced the static-asset version so browsers load the corrected responsive styles immediately.
 
 ### Batch 4: Administrator UI/UX Refinement
 Status: Completed

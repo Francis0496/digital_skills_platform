@@ -5,8 +5,12 @@
 
 html { scroll-behavior: smooth; }
 *, *::before, *::after { box-sizing: border-box; }
-body { min-width: 0; }
-img, svg { max-width: 100%; }
+body { min-width: 0; overflow-wrap: break-word; }
+main, section, article, aside, nav, form, fieldset, dl, div { min-width: 0; }
+img, svg, video, iframe { display: block; max-width: 100%; }
+img, video { height: auto; }
+input, select, textarea, button { max-width: 100%; }
+h1, h2, h3, h4, p, li, dd, dt, a { overflow-wrap: anywhere; }
 :focus-visible { outline: 3px solid var(--brand-teal); outline-offset: 3px; }
 .skip-link { position: fixed; left: 1rem; top: 1rem; z-index: 100; transform: translateY(-200%); border-radius: .5rem; background: var(--brand-navy); color: white; padding: .75rem 1rem; }
 .skip-link:focus { transform: translateY(0); }
@@ -39,7 +43,7 @@ img, svg { max-width: 100%; }
 .notification-count { position: absolute; right: -.25rem; top: -.25rem; min-width: 1.25rem; border: 2px solid white; border-radius: 999px; background: #dc2626; padding-inline: .25rem; color: white; font-size: .6875rem; line-height: 1rem; font-weight: 800; text-align: center; }
 .avatar { display: grid; width: 2.5rem; height: 2.5rem; flex: none; place-items: center; border-radius: 999px; background: #e0e7ff; color: var(--brand-primary-dark); font-weight: 800; }
 
-.btn-primary, .btn-secondary, .btn-danger, .btn-on-dark, .btn-hero-secondary { display: inline-flex; min-height: 2.75rem; align-items: center; justify-content: center; border: 1px solid transparent; border-radius: .55rem; padding: .625rem 1rem; font-size: .875rem; line-height: 1.25rem; font-weight: 750; text-align: center; transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease, transform 150ms ease; }
+.btn-primary, .btn-secondary, .btn-danger, .btn-on-dark, .btn-hero-secondary { display: inline-flex; min-height: 2.75rem; max-width: 100%; align-items: center; justify-content: center; border: 1px solid transparent; border-radius: .55rem; padding: .625rem 1rem; overflow-wrap: anywhere; font-size: .875rem; line-height: 1.25rem; font-weight: 750; text-align: center; transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease, transform 150ms ease; }
 .btn-large { min-height: 3rem; padding-inline: 1.35rem; font-size: .9375rem; }
 .btn-primary { background: var(--brand-primary); color: white; box-shadow: 0 4px 12px rgb(79 70 229 / .18); }
 .btn-primary:hover { background: var(--brand-primary-dark); }
@@ -92,7 +96,7 @@ img, svg { max-width: 100%; }
 .card { min-width: 0; border: 1px solid var(--brand-border); border-radius: .75rem; background: white; padding: 1.5rem; box-shadow: 0 1px 3px rgb(15 23 42 / .05); }
 .empty-state { border: 1px dashed #cbd5e1; border-radius: .85rem; background: white; padding: 2.5rem 1.5rem; text-align: center; }
 .empty-state-icon { margin-inline: auto; }
-.badge { display: inline-flex; border-radius: 999px; padding: .25rem .625rem; font-size: .75rem; line-height: 1rem; font-weight: 750; }
+.badge { display: inline-flex; width: fit-content; max-width: 100%; flex: 0 1 auto; align-items: center; justify-content: center; border-radius: 999px; padding: .3rem .65rem; overflow-wrap: anywhere; font-size: .75rem; line-height: 1rem; font-weight: 750; text-align: center; vertical-align: middle; }
 .badge-success { background: #d1fae5; color: #065f46; }
 .badge-info { background: #dbeafe; color: #1e40af; }
 .badge-danger { background: #fee2e2; color: #991b1b; }
@@ -243,6 +247,11 @@ img, svg { max-width: 100%; }
 .applicant-summary .applicant-bio { margin-block: 1rem; line-height: 1.5rem; }
 .applicant-links { display: grid; gap: .65rem; margin-top: 1.25rem; }
 .status-update-form { display: grid; gap: .75rem; margin-top: 1.5rem; border-top: 1px solid #e2e8f0; padding-top: 1.5rem; }
+.notification-center-header { display: flex; flex-direction: column; align-items: flex-start; gap: 1rem; }
+.notification-center-list { display: grid; gap: .75rem; margin-top: 1.5rem; }
+.notification-center-card { display: flex; flex-direction: column; align-items: stretch; gap: 1rem; }
+.notification-center-card > div { min-width: 0; flex: 1; }
+.notification-center-card p { overflow-wrap: anywhere; }
 .admin-stat-grid { display: grid; grid-template-columns: minmax(0,1fr); gap: .85rem; margin-top: 1.5rem; }
 .admin-dashboard-grid { display: grid; gap: 1.25rem; margin-top: 1.5rem; }
 .admin-recent-users > article { display: grid; grid-template-columns: auto minmax(0,1fr); gap: .75rem; border-bottom: 1px solid #e2e8f0; padding-block: 1rem; }
@@ -295,6 +304,7 @@ img, svg { max-width: 100%; }
     .learner-stat-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
     .course-card-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
     .mentor-card-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+    .notification-center-header, .notification-center-card { flex-direction: row; align-items: flex-start; justify-content: space-between; }
     .request-actions { flex-direction: row; align-items: end; justify-content: space-between; }
     .client-opportunity-card { flex-direction: row; align-items: center; justify-content: space-between; }
     .client-opportunity-main { flex: 1; }
@@ -305,6 +315,21 @@ img, svg { max-width: 100%; }
     .admin-search > div { flex-direction: row; align-items: center; }
     .admin-record-list > article { flex-direction: row; align-items: center; justify-content: space-between; }
     .application-review-footer { flex-direction: row; align-items: center; justify-content: space-between; }
+}
+
+@media (max-width: 479px) {
+    .site-nav { min-height: 4.25rem; gap: .5rem; padding-inline: .75rem; }
+    .brand-logo { width: 7.75rem; }
+    .site-nav .avatar { display: none; }
+    .site-nav > div { gap: .4rem; }
+    .site-nav form .btn-secondary { min-height: 2.5rem; padding-inline: .65rem; font-size: .75rem; }
+    .dashboard-content { padding-inline: .75rem; }
+    .card, .dashboard-panel { padding: 1rem; }
+    .dashboard-page-header > .btn-primary, .dashboard-page-header > .btn-secondary { width: 100%; }
+    .panel-heading { align-items: flex-start; }
+    .empty-state { padding-inline: 1rem; }
+    .learner-stat-grid, .admin-stat-grid { gap: .75rem; }
+    .learner-stat-card { min-height: 5rem; }
 }
 
 @media (min-width: 768px) {

@@ -21,7 +21,7 @@ def test_design_01_public_navigation_has_mobile_control(client):
     assert b'class="mobile-menu-button menu-button"' in response.data
     assert b'class="hero-actions"' in response.data
     assert b"hero-feature-card" not in response.data
-    assert b"?v=2026.08.24.2" in response.data
+    assert b"?v=2026.08.24.3" in response.data
     for path in (b"/courses/", b"/opportunities/", b"/mentorship/mentors", b"/about"):
         assert path in response.data
 
@@ -95,7 +95,7 @@ def test_design_04_learner_dashboard_uses_complete_task_navigation(client, user_
 def test_design_05_reusable_component_styles_are_served(client):
     response = client.get("/static/css/app.css")
     assert response.status_code == 200
-    for component in (b".btn-primary", b".form-input", b".card", b".badge", b".alert", b".learner-stat-grid", b".progress-track"):
+    for component in (b".btn-primary", b".form-input", b".card", b".badge", b".alert", b".learner-stat-grid", b".progress-track", b"@media (max-width: 479px)"):
         assert component in response.data
     for responsive_rule in (
         b".desktop-navigation { display: none",
