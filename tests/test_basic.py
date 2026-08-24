@@ -74,3 +74,32 @@ def test_foundation_08_error_templates_render(app):
         response = app.test_client().get(path)
         assert response.status_code == status
         assert expected_text in response.data
+
+
+def test_create_admin_command_creates_admin_and_rejects_duplicates(app):
+    from app.models import User
+
+    runner = app.test_cli_runner()
+    command = [
+        "create-admin",
+        "--full-name",
+        "Ibrahim Sorie Kondeh",
+        "--email",
+        "ibrahimsoriekondeh@gmail.com",
+    ]
+    result = runner.invoke(args=command, input="SecurePass123!\nSecurePass123!\n")
+
+    assert result.exit_code == 0
+    user = db.session.scalar(
+        db.select(User).filter_by(email="ibrahimsoriekondeh@gmail.com")
+    )
+    assert user is not None
+    assert user.full_name == "Ibrahim Sorie Kondeh"
+    assert user.role_name == "administrator"
+    assert user.check_password("SecurePass123!")
+
+    duplicate = runner.invoke(
+        args=command, input="AnotherPass123!\nAnotherPass123!\n"
+    )
+    assert duplicate.exit_code != 0
+    assert "already exists" in duplicate.output

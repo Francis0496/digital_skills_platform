@@ -127,6 +127,13 @@ The seed command is idempotent and safe to run more than once. Public
 registration supports freelancer, mentor, and client accounts; administrator
 accounts are never created through public registration.
 
+Create an administrator from a trusted local terminal. The password is hidden,
+confirmed, and never placed in shell history:
+
+```text
+flask --app run.py create-admin --full-name "Administrator Name" --email admin@example.com
+```
+
 ## Tailwind CSS
 
 Tailwind is compiled locally; the application has no browser-CDN dependency.

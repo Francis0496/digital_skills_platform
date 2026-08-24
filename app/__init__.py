@@ -123,14 +123,43 @@ def configure_logging(app):
 
 def register_commands(app):
     import click
+    from email_validator import EmailNotValidError, validate_email
 
-    from .models import seed_roles
+    from .models import Role, User, seed_roles
 
     @app.cli.command("seed-roles")
     def seed_roles_command():
         """Create the four approved platform roles."""
         created = seed_roles()
         click.echo(f"Roles ready ({created} created).")
+
+    @app.cli.command("create-admin")
+    @click.option("--full-name", prompt="Full name")
+    @click.option("--email", prompt="Email address")
+    @click.password_option(confirmation_prompt=True)
+    def create_admin_command(full_name, email, password):
+        """Create an administrator without exposing a password in shell history."""
+        full_name = full_name.strip()
+        if not 2 <= len(full_name) <= 120:
+            raise click.ClickException("Full name must contain 2 to 120 characters.")
+        try:
+            email = validate_email(
+                email.strip(), check_deliverability=False
+            ).normalized.lower()
+        except EmailNotValidError as error:
+            raise click.ClickException(str(error)) from error
+        if not 8 <= len(password) <= 128:
+            raise click.ClickException("Password must contain 8 to 128 characters.")
+        if db.session.scalar(db.select(User).filter_by(email=email)) is not None:
+            raise click.ClickException("An account with that email already exists.")
+
+        seed_roles()
+        role = db.session.scalar(db.select(Role).filter_by(name="administrator"))
+        user = User(full_name=full_name, email=email, role=role)
+        user.set_password(password)
+        db.session.add(user)
+        db.session.commit()
+        click.echo(f"Administrator created: {email}")
 
 
 def register_account_checks(app):
