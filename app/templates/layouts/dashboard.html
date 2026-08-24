@@ -23,6 +23,7 @@
             {{ learner_link('mentorship.directory', 'Mentors', 'users', request.endpoint in ['mentorship.directory','mentorship.mentor_detail']) }}
             {{ learner_link('mentorship.my_requests', 'Mentorship', 'users', request.endpoint in ['mentorship.my_requests','mentorship.request_mentor']) }}
             {{ learner_link('notifications.index', 'Notifications', 'bell', request.endpoint and request.endpoint.startswith('notifications.')) }}
+            {{ learner_link('main.index', 'Public Site', 'home', false) }}
         </nav>
         <form class="learner-sidebar-logout" method="post" action="{{ url_for('auth.logout') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button type="submit">{{ icon('arrow') }}<span>Log out</span></button></form>
         {% elif current_user.role_name == 'mentor' %}
@@ -34,6 +35,7 @@
             {{ mentor_link('mentorship.received_requests', 'Mentorship Requests', 'document', request.endpoint in ['mentorship.received_requests','mentorship.respond']) }}
             {{ mentor_link('mentorship.mentees', 'My Mentees', 'users', request.endpoint == 'mentorship.mentees') }}
             {{ mentor_link('notifications.index', 'Notifications', 'bell', request.endpoint and request.endpoint.startswith('notifications.')) }}
+            {{ mentor_link('main.index', 'Public Site', 'home', false) }}
         </nav>
         <form class="learner-sidebar-logout" method="post" action="{{ url_for('auth.logout') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button type="submit">{{ icon('arrow') }}<span>Log out</span></button></form>
         {% elif current_user.role_name == 'client' %}
@@ -45,6 +47,7 @@
             {{ mentor_link('opportunities.mine', 'My Opportunities', 'briefcase', request.endpoint in ['opportunities.mine','opportunities.edit'] or (request.endpoint == 'opportunities.detail' and current_user.role_name == 'client')) }}
             {{ mentor_link('opportunities.mine', 'Applications', 'document', request.endpoint and request.endpoint.startswith('applications.')) }}
             {{ mentor_link('notifications.index', 'Notifications', 'bell', request.endpoint and request.endpoint.startswith('notifications.')) }}
+            {{ mentor_link('main.index', 'Public Site', 'home', false) }}
         </nav>
         <form class="learner-sidebar-logout" method="post" action="{{ url_for('auth.logout') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button type="submit">{{ icon('arrow') }}<span>Log out</span></button></form>
         {% else %}
@@ -58,6 +61,7 @@
             {{ mentor_link('applications.oversight', 'Applications', 'document', request.endpoint and request.endpoint.startswith('applications.')) }}
             {{ mentor_link('admin.mentorships', 'Mentorships', 'users', request.endpoint == 'admin.mentorships') }}
             {{ mentor_link('notifications.index', 'Notifications', 'bell', request.endpoint and request.endpoint.startswith('notifications.')) }}
+            {{ mentor_link('main.index', 'Public Site', 'home', false) }}
         </nav>
         <form class="learner-sidebar-logout" method="post" action="{{ url_for('auth.logout') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button type="submit">{{ icon('arrow') }}<span>Log out</span></button></form>
         {% endif %}

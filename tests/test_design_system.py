@@ -63,8 +63,21 @@ def test_design_02b_authenticated_header_stays_compact(client, user_factory):
     user_factory(role_name="administrator")
     response = login(client)
     assert b"topbar-logout" in response.data
+    assert b'class="workspace-link"' in response.data
+    assert b"Return to administrator workspace" in response.data
+    assert b"Public Site" in response.data
     assert b"Open dashboard navigation" in response.data
     assert b">Dashboard</a>" not in response.data
+
+
+def test_design_02c_admin_can_return_to_workspace_from_public_site(client, user_factory):
+    user_factory(role_name="administrator")
+    login(client)
+    public_page = client.get("/")
+    assert b'class="workspace-link"' in public_page.data
+    response = client.get("/users/dashboard")
+    assert response.status_code == 302
+    assert response.headers["Location"].endswith("/admin/")
 
 
 @pytest.mark.parametrize(

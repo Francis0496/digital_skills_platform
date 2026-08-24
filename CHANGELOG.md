@@ -4,6 +4,13 @@ All significant project changes should be recorded by increment.
 
 ## Unreleased
 
+### Authenticated Navigation Continuity
+
+- Added a persistent responsive Workspace control to the shared authenticated header on public and role-specific pages.
+- Made the authenticated avatar a direct return path to the current role workspace.
+- Added a real Public Site destination to Freelancer, Mentor, Client, and Administrator sidebars.
+- Preserved compact icon-only behavior on mobile and exposed the Workspace label from tablet widths upward.
+
 ### Opportunity Oversight Action Correction
 
 - Rebalanced client opportunity management cards so actions wrap cleanly at compact desktop widths and remain content-sized in a dedicated wide-screen action column.
