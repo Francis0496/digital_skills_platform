@@ -31,6 +31,12 @@ Map approved requirements to implementation modules, tests, and dissertation evi
 | FR24 | Administration | user search and activation/deactivation — Tested | ADMIN-01, ADMIN-03 | Ch. 5 |
 | FR25 | Administration | skills plus existing category/course/lesson management — Tested | ADMIN-04, COURSE-03 to COURSE-06 | Ch. 5 |
 | FR26 | Administration | opportunity, application, mentor and mentorship oversight — Tested | ADMIN-05, APP-10, JOB-04 | Ch. 5 |
+| FR27 | Mentorship Workspace | participant-only active relationship workspace — Tested | WORKSPACE-01 to WORKSPACE-03 | Ch. 4 + Ch. 5 |
+| FR28 | Mentorship Goals | participant creation, validation and secure completion — Tested | WORKSPACE-04 to WORKSPACE-06 | Ch. 5 |
+| FR29 | Mentorship Progress | mentee-only progress with optional same-workspace goal — Tested | WORKSPACE-07, WORKSPACE-08 | Ch. 5 |
+| FR30 | Mentor Feedback | assigned-mentor feedback with same-workspace associations — Tested | WORKSPACE-09, WORKSPACE-10 | Ch. 5 |
+| FR31 | Mentorship Activity | timestamp-derived goal, progress, feedback and relationship history — Tested | WORKSPACE-01, WORKSPACE-11 | Ch. 4 + Ch. 5 |
+| FR32 | Mentorship Notifications | participant-scoped goal, progress, feedback and completion notifications — Tested | WORKSPACE-04, WORKSPACE-06, WORKSPACE-07, WORKSPACE-09 | Ch. 5 |
 
 | NFR-S01 | Security | production configuration, cookies, CSP and response headers in `config.py` and `app/__init__.py` - Verified | HARDEN-01 to HARDEN-03 | Ch. 5 + deployment evidence |
 | NFR-D01 | Deployment | local Tailwind asset, `wsgi.py`, `Procfile`, `/health`, and `DEPLOYMENT.md` - Verified | HARDEN-04, HARDEN-05 | Ch. 5 + deployment evidence |

@@ -135,6 +135,58 @@ h1, h2, h3, h4, p, li, dd, dt, a { overflow-wrap: anywhere; }
 .learner-sidebar-heading div span { margin-top: .15rem; color: #94a3b8; font-size: .75rem; }
 .learner-sidebar-avatar { display: grid; width: 2.5rem; height: 2.5rem; flex: none; place-items: center; border-radius: 999px; background: #e0e7ff; color: #3730a3; font-weight: 800; }
 .user-avatar-image { display: block; object-fit: cover; object-position: center; }
+.mentorship-workspace-header { display: flex; flex-direction: column; align-items: flex-start; gap: 1rem; }
+.mentorship-workspace-header h1 { margin-top: .35rem; color: #0f172a; font-size: clamp(1.75rem,4vw,2.35rem); font-weight: 850; letter-spacing: -.035em; }
+.mentorship-workspace-header p:last-child { margin-top: .4rem; color: #64748b; }
+.mentorship-relationship-card { display: grid; gap: 1.25rem; margin-top: 1.5rem; border: 1px solid #c7d2fe; border-radius: 1rem; background: linear-gradient(135deg,#312e81,#4338ca 60%,#0f766e); padding: 1.25rem; color: white; box-shadow: 0 14px 30px rgb(49 46 129 / .16); }
+.mentorship-participant { display: flex; min-width: 0; align-items: center; gap: 1rem; }
+.mentorship-participant-avatar { display: grid; width: 4rem; height: 4rem; flex: none; place-items: center; border: 3px solid rgb(255 255 255 / .45); border-radius: 999px; background: #e0e7ff; color: #3730a3; font-size: 1.35rem; font-weight: 850; }
+.mentorship-participant span, .mentorship-relationship-card dt { color: #c7d2fe; font-size: .68rem; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; }
+.mentorship-participant strong { display: block; margin-top: .15rem; font-size: 1.05rem; }
+.mentorship-participant p { margin-top: .15rem; color: #e0e7ff; font-size: .75rem; }
+.mentorship-relationship-card dl { display: grid; gap: .85rem; }
+.mentorship-relationship-card dd { margin-top: .2rem; font-size: .78rem; font-weight: 700; line-height: 1.3rem; }
+.mentorship-workspace-layout, .mentorship-workspace-main, .mentorship-workspace-aside { display: grid; min-width: 0; gap: 1.25rem; }
+.mentorship-workspace-layout { margin-top: 1.25rem; }
+.workspace-section-icon { display: inline-flex; width: 2.35rem; height: 2.35rem; flex: none; align-items: center; justify-content: center; border-radius: .65rem; background: #eef2ff; color: #4f46e5; }
+.workspace-section-icon .ui-icon { width: 1.1rem; height: 1.1rem; }
+.mentorship-goal-list, .mentorship-update-list, .mentorship-feedback-list { display: grid; gap: .85rem; margin-top: 1rem; }
+.mentorship-goal-card, .mentorship-update-card { min-width: 0; border: 1px solid #e2e8f0; border-radius: .85rem; background: #fff; padding: 1rem; }
+.mentorship-goal-heading { display: flex; flex-direction: column; align-items: stretch; gap: .8rem; }
+.mentorship-goal-heading h3 { margin-top: .5rem; color: #0f172a; font-size: 1rem; font-weight: 850; }
+.mentorship-goal-card > p, .mentorship-record-content { margin-top: .7rem; white-space: pre-line; overflow-wrap: anywhere; color: #475569; font-size: .82rem; line-height: 1.5rem; }
+.mentorship-goal-card > time { display: block; margin-top: .75rem; color: #94a3b8; font-size: .68rem; font-weight: 700; }
+.mentorship-inline-form { display: grid; gap: .7rem; margin-top: 1.25rem; border-top: 1px solid #e2e8f0; padding-top: 1.25rem; }
+.mentorship-inline-form h3 { color: #0f172a; font-weight: 850; }
+.mentorship-inline-form > p { margin-top: -.45rem; color: #64748b; font-size: .76rem; line-height: 1.3rem; }
+.mentorship-inline-form .form-label { margin-top: .2rem; }
+.mentorship-inline-form .form-input { margin-top: 0; }
+.mentorship-inline-form .btn-primary { width: fit-content; margin-top: .25rem; }
+.mentorship-form-grid { display: grid; gap: .7rem; }
+.mentorship-update-card > header { display: flex; align-items: center; gap: .7rem; }
+.mentorship-update-card > header strong, .mentorship-update-card > header time { display: block; }
+.mentorship-update-card > header strong { color: #0f172a; font-size: .8rem; }
+.mentorship-update-card > header time { margin-top: .1rem; color: #94a3b8; font-size: .68rem; }
+.mentorship-linked-goal { margin-top: .8rem; border-radius: .5rem; background: #f1f5f9; padding: .55rem .7rem; color: #475569; font-size: .72rem; }
+.mentorship-attached-feedback { display: grid; gap: .55rem; margin-top: 1rem; border-left: 3px solid #14b8a6; border-radius: 0 .65rem .65rem 0; background: #f0fdfa; padding: .8rem; }
+.mentorship-attached-feedback > div { display: flex; align-items: center; gap: .5rem; }
+.mentorship-attached-feedback .ui-icon { width: 1rem; height: 1rem; color: #0f766e; }
+.mentorship-attached-feedback strong, .mentorship-attached-feedback time { display: block; }
+.mentorship-attached-feedback strong { color: #115e59; font-size: .72rem; text-transform: uppercase; }
+.mentorship-attached-feedback time { color: #64748b; font-size: .65rem; }
+.mentorship-attached-feedback > p { color: #334155; font-size: .78rem; line-height: 1.4rem; }
+.mentorship-feedback-list article { border-bottom: 1px solid #e2e8f0; padding-bottom: .85rem; }
+.mentorship-feedback-list article:last-child { border-bottom: 0; padding-bottom: 0; }
+.mentorship-feedback-list article > div { display: flex; justify-content: space-between; gap: .75rem; }
+.mentorship-feedback-list strong { color: #0f172a; font-size: .75rem; }
+.mentorship-feedback-list time, .mentorship-feedback-list span { color: #94a3b8; font-size: .65rem; }
+.mentorship-feedback-list span { display: block; margin-top: .25rem; }
+.mentorship-feedback-list p { margin-top: .45rem; white-space: pre-line; color: #475569; font-size: .76rem; line-height: 1.35rem; }
+.mentorship-activity-list { display: grid; gap: .8rem; margin-top: 1rem; }
+.mentorship-activity-list li { display: grid; grid-template-columns: auto minmax(0,1fr); gap: .65rem; }
+.mentorship-activity-list li > span { width: .65rem; height: .65rem; margin-top: .2rem; border: 2px solid #818cf8; border-radius: 999px; background: white; }
+.mentorship-activity-list time { color: #6366f1; font-size: .65rem; font-weight: 800; text-transform: uppercase; }
+.mentorship-activity-list p { margin-top: .15rem; color: #475569; font-size: .74rem; line-height: 1.25rem; }
 .learner-navigation { display: grid; gap: .2rem; padding-block: 1.25rem; }
 .learner-nav-link, .learner-sidebar-logout button { display: flex; min-height: 2.75rem; width: 100%; align-items: center; gap: .75rem; border-radius: .55rem; padding: .65rem .75rem; color: #cbd5e1; font-size: .875rem; font-weight: 650; text-align: left; }
 .learner-nav-link:hover, .learner-sidebar-logout button:hover { background: #1e293b; color: white; }
@@ -370,6 +422,11 @@ h1, h2, h3, h4, p, li, dd, dt, a { overflow-wrap: anywhere; }
     .learning-category-heading-actions { justify-content: flex-end; }
     .learning-category-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
     .application-review-footer { flex-direction: row; align-items: center; justify-content: space-between; }
+    .mentorship-workspace-header { flex-direction: row; align-items: flex-start; justify-content: space-between; }
+    .mentorship-relationship-card { grid-template-columns: minmax(15rem,.8fr) minmax(0,1.2fr); align-items: center; }
+    .mentorship-relationship-card dl { grid-template-columns: repeat(2,minmax(0,1fr)); }
+    .mentorship-goal-heading { flex-direction: row; align-items: flex-start; justify-content: space-between; }
+    .mentorship-form-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
 }
 
 @media (max-width: 479px) {
@@ -442,6 +499,8 @@ h1, h2, h3, h4, p, li, dd, dt, a { overflow-wrap: anywhere; }
     .admin-table tbody tr:last-child td { border-bottom: 0; }
     .admin-table td::before { display: none; }
     .admin-table td:last-child { text-align: right; }
+    .mentorship-workspace-layout { grid-template-columns: minmax(0,1.45fr) minmax(18rem,.55fr); align-items: start; }
+    .mentorship-workspace-aside { position: sticky; top: 6.5rem; }
 }
 
 @media (min-width: 1280px) {

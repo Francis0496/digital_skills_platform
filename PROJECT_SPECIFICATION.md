@@ -171,6 +171,24 @@ The system shall maintain active mentorship relationships.
 ### FR22 Notifications
 The system shall create in-app notifications for important events.
 
+### FR27 Mentorship Workspace
+Mentors and freelancers shall access a private workspace for their own active mentorship relationship.
+
+### FR28 Mentorship Goals
+Both participants shall create development goals and securely mark them completed.
+
+### FR29 Mentorship Progress
+The freelancer, acting as mentee, shall post structured progress updates with an optional relationship goal.
+
+### FR30 Mentor Feedback
+The assigned mentor shall provide structured feedback associated with the relationship, a goal, or a progress update.
+
+### FR31 Mentorship Activity
+The workspace shall present a derived history of relationship, goal, progress, and feedback events.
+
+### FR32 Mentorship Workspace Notifications
+The system shall notify only the other mentorship participant about goals, completion, progress, and feedback.
+
 ### FR23 Admin Dashboard
 Administrators shall view core platform statistics.
 
@@ -214,6 +232,10 @@ Administrators shall monitor opportunities, applications, mentors, and mentorshi
 16. Administrators may deactivate users and moderate managed records.
 17. Administrator access is never granted via public registration.
 18. Referential integrity must be preserved.
+19. Mentorship workspace content is available only to participants in an active relationship.
+20. Only the relationship's freelancer may create progress updates.
+21. Only the relationship's assigned mentor may create mentor feedback.
+22. Child records may only reference goals or progress updates from the same mentorship.
 
 ## SDLC
 Use an iterative SDLC:

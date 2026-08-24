@@ -230,6 +230,43 @@ Fields:
 - `is_read` BOOLEAN NOT NULL DEFAULT FALSE
 - `created_at` DATETIME NOT NULL
 
+### MentorshipGoal
+Fields:
+- `id` INTEGER PK
+- `mentorship_id` INTEGER FK -> mentorship.id NOT NULL, indexed
+- `title` VARCHAR(180) NOT NULL
+- `description` TEXT NOT NULL
+- `status` VARCHAR(20) NOT NULL DEFAULT `active`
+- `created_at` DATETIME NOT NULL
+- `updated_at` DATETIME NOT NULL
+- `completed_at` DATETIME NULL
+
+Allowed statuses: `active`, `completed`.
+
+### MentorshipProgressUpdate
+Fields:
+- `id` INTEGER PK
+- `mentorship_id` INTEGER FK -> mentorship.id NOT NULL, indexed
+- `author_id` INTEGER FK -> user.id NOT NULL
+- `goal_id` INTEGER FK -> mentorship_goal.id NULL
+- `content` TEXT NOT NULL
+- `created_at` DATETIME NOT NULL
+- `updated_at` DATETIME NOT NULL
+
+Only the freelancer participant creates progress updates. `goal_id`, when present, must belong to the same mentorship.
+
+### MentorshipFeedback
+Fields:
+- `id` INTEGER PK
+- `mentorship_id` INTEGER FK -> mentorship.id NOT NULL, indexed
+- `mentor_id` INTEGER FK -> user.id NOT NULL
+- `progress_update_id` INTEGER FK -> mentorship_progress_update.id NULL
+- `goal_id` INTEGER FK -> mentorship_goal.id NULL
+- `content` TEXT NOT NULL
+- `created_at` DATETIME NOT NULL
+
+Only the assigned mentor creates feedback. Optional child associations must belong to the same mentorship.
+
 ## Core Relationship Summary
 - Role 1:M User
 - User M:M Skill through UserSkill
@@ -246,10 +283,16 @@ Fields:
 - Freelancer/User 1:M MentorshipRequest
 - Mentor/User 1:M MentorshipRequest
 - User 1:M Notification
+- Mentorship 1:M MentorshipGoal
+- Mentorship 1:M MentorshipProgressUpdate
+- Mentorship 1:M MentorshipFeedback
+- MentorshipGoal 1:M MentorshipProgressUpdate (optional association)
+- MentorshipProgressUpdate 1:M MentorshipFeedback (optional association)
 
 ## Deletion Guidance
 - Prefer deactivation of User rather than deletion.
 - Deleting a Course with historical enrolments should be avoided. Prefer unpublishing.
 - Closing an Opportunity is preferred to deleting one that already has applications.
 - Historical JobApplication and Mentorship data should not be silently destroyed.
+- Mentorship goals, progress updates, and feedback are retained as a professional relationship history; the prototype provides no permanent-delete action.
 - PortfolioProject can be safely deleted by the owner if no external dependency exists.

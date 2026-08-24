@@ -284,6 +284,91 @@ class Mentorship(db.Model):
     status = db.Column(db.String(20), nullable=False, default="active")
     freelancer = db.relationship("User", foreign_keys=[freelancer_id])
     mentor = db.relationship("User", foreign_keys=[mentor_id])
+    goals = db.relationship(
+        "MentorshipGoal", back_populates="mentorship", cascade="all, delete-orphan"
+    )
+    progress_updates = db.relationship(
+        "MentorshipProgressUpdate",
+        back_populates="mentorship",
+        cascade="all, delete-orphan",
+    )
+    feedback_entries = db.relationship(
+        "MentorshipFeedback",
+        back_populates="mentorship",
+        cascade="all, delete-orphan",
+    )
+
+
+class MentorshipGoal(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    mentorship_id = db.Column(
+        db.Integer, db.ForeignKey("mentorship.id"), nullable=False, index=True
+    )
+    title = db.Column(db.String(180), nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    status = db.Column(db.String(20), nullable=False, default="active")
+    created_at = db.Column(
+        db.DateTime, nullable=False, default=lambda: datetime.now(timezone.utc)
+    )
+    updated_at = db.Column(
+        db.DateTime,
+        nullable=False,
+        default=lambda: datetime.now(timezone.utc),
+        onupdate=lambda: datetime.now(timezone.utc),
+    )
+    completed_at = db.Column(db.DateTime)
+    mentorship = db.relationship("Mentorship", back_populates="goals")
+    progress_updates = db.relationship(
+        "MentorshipProgressUpdate", back_populates="goal"
+    )
+    feedback_entries = db.relationship("MentorshipFeedback", back_populates="goal")
+
+
+class MentorshipProgressUpdate(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    mentorship_id = db.Column(
+        db.Integer, db.ForeignKey("mentorship.id"), nullable=False, index=True
+    )
+    author_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    goal_id = db.Column(db.Integer, db.ForeignKey("mentorship_goal.id"))
+    content = db.Column(db.Text, nullable=False)
+    created_at = db.Column(
+        db.DateTime, nullable=False, default=lambda: datetime.now(timezone.utc)
+    )
+    updated_at = db.Column(
+        db.DateTime,
+        nullable=False,
+        default=lambda: datetime.now(timezone.utc),
+        onupdate=lambda: datetime.now(timezone.utc),
+    )
+    mentorship = db.relationship("Mentorship", back_populates="progress_updates")
+    author = db.relationship("User", foreign_keys=[author_id])
+    goal = db.relationship("MentorshipGoal", back_populates="progress_updates")
+    feedback_entries = db.relationship(
+        "MentorshipFeedback", back_populates="progress_update"
+    )
+
+
+class MentorshipFeedback(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    mentorship_id = db.Column(
+        db.Integer, db.ForeignKey("mentorship.id"), nullable=False, index=True
+    )
+    mentor_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    progress_update_id = db.Column(
+        db.Integer, db.ForeignKey("mentorship_progress_update.id")
+    )
+    goal_id = db.Column(db.Integer, db.ForeignKey("mentorship_goal.id"))
+    content = db.Column(db.Text, nullable=False)
+    created_at = db.Column(
+        db.DateTime, nullable=False, default=lambda: datetime.now(timezone.utc)
+    )
+    mentorship = db.relationship("Mentorship", back_populates="feedback_entries")
+    mentor = db.relationship("User", foreign_keys=[mentor_id])
+    progress_update = db.relationship(
+        "MentorshipProgressUpdate", back_populates="feedback_entries"
+    )
+    goal = db.relationship("MentorshipGoal", back_populates="feedback_entries")
 
 
 class Notification(db.Model):

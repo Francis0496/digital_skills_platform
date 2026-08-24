@@ -4,6 +4,15 @@ All significant project changes should be recorded by increment.
 
 ## Unreleased
 
+### Mentorship Workspace
+
+- Added private participant-only workspaces for active mentorship relationships.
+- Added mentorship goals with participant creation and secure completion.
+- Added learner progress updates and structured mentor feedback with optional same-workspace associations.
+- Added a derived mentorship activity timeline and participant-scoped notifications.
+- Added responsive workspace entry points to learner and mentor dashboards, mentorship lists, and mentee cards.
+- Added migration, RBAC, IDOR, CSRF, stored-XSS, notification, validation, and dashboard integration tests.
+
 ### Secure Cross-Platform Profile Avatars
 
 - Added a reusable avatar component that displays uploaded profile photos with an initials fallback.

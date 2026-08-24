@@ -95,6 +95,18 @@ Test:
 - Read/unread behavior.
 - User cannot read another user's private notifications through direct modification routes.
 
+### 9A. Mentorship Workspace Tests
+Test:
+- Mentor and mentee access to their active relationship workspace.
+- Anonymous, inactive, client, administrator, unrelated learner, and unrelated mentor denial.
+- Participant goal creation, required fields, secure completion, and cross-workspace denial.
+- Mentee-only progress creation and optional same-workspace goal association.
+- Assigned-mentor-only feedback and optional same-workspace progress/goal association.
+- Participant-scoped notifications for goals, completion, progress, and feedback.
+- POST-only state changes, CSRF enforcement, IDOR protection, and escaped stored content.
+- Workspace entry points on learner and mentor dashboards and relationship pages.
+- Empty goal, progress, and feedback states plus responsive long-content wrapping.
+
 ### 11. Admin Tests
 Test:
 - Admin dashboard access.

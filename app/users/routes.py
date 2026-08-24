@@ -87,6 +87,14 @@ def dashboard():
                 Mentorship.status == "active",
             )
         )
+        active_mentorship_records = db.session.scalars(
+            db.select(Mentorship)
+            .where(
+                Mentorship.freelancer_id == current_user.id,
+                Mentorship.status == "active",
+            )
+            .order_by(Mentorship.start_date.desc())
+        ).all()
         mentorship_requests = db.session.scalar(
             db.select(db.func.count(MentorshipRequest.id)).where(
                 MentorshipRequest.freelancer_id == current_user.id,
@@ -126,6 +134,7 @@ def dashboard():
                 item.status in {"pending", "under_review"} for item in applications
             ),
             active_mentorships=active_mentorships,
+            active_mentorship_records=active_mentorship_records,
             mentorship_requests=mentorship_requests,
             recent_opportunities=recent_opportunities,
             recent_notifications=recent_notifications,

@@ -1,0 +1,47 @@
+{% extends "layouts/dashboard.html" %}
+{% from "components/avatar.html" import avatar %}
+{% from "components/icon.html" import icon %}
+{% block title %}Mentorship Workspace | Digital Skills Platform{% endblock %}
+{% block dashboard_content %}
+{% set partner = mentorship.freelancer if mentor_view else mentorship.mentor %}
+<header class="mentorship-workspace-header">
+    <div><p class="dashboard-eyebrow">Mentorship workspace</p><h1>{{ partner.full_name }}</h1><p>{{ 'You are mentoring this learner through their professional development.' if mentor_view else (mentorship.mentor.mentor_profile.professional_title if mentorship.mentor.mentor_profile and mentorship.mentor.mentor_profile.professional_title else 'Your professional mentor') }}</p></div>
+    <span class="badge badge-success">Active mentorship</span>
+</header>
+
+<section class="mentorship-relationship-card" aria-label="Mentorship relationship summary">
+    <div class="mentorship-participant">{{ avatar(partner, 'mentorship-participant-avatar') }}<div><span>{{ 'Mentee' if mentor_view else 'Mentor' }}</span><strong>{{ partner.full_name }}</strong><p>{{ partner.location or 'Location not provided' }}</p></div></div>
+    <dl><div><dt>Status</dt><dd>Active</dd></div><div><dt>Mentorship since</dt><dd><time datetime="{{ mentorship.start_date.isoformat() }}">{{ mentorship.start_date.strftime('%d %B %Y') }}</time></dd></div>{% if not mentor_view and mentorship.mentor.mentor_profile and mentorship.mentor.mentor_profile.expertise %}<div><dt>Expertise</dt><dd>{{ mentorship.mentor.mentor_profile.expertise|truncate(110) }}</dd></div>{% endif %}</dl>
+</section>
+
+<div class="mentorship-workspace-layout">
+    <main class="mentorship-workspace-main">
+        <section class="dashboard-panel" id="goals" aria-labelledby="goals-heading">
+            <div class="panel-heading"><div><p class="dashboard-eyebrow">Development plan</p><h2 id="goals-heading">{{ 'Goals' if mentor_view else 'My Goals' }}</h2></div><span class="workspace-section-icon">{{ icon('target') }}</span></div>
+            {% if goals %}<div class="mentorship-goal-list">{% for goal in goals %}<article class="mentorship-goal-card"><div class="mentorship-goal-heading"><div><span class="badge {{ 'badge-success' if goal.status == 'completed' else 'badge-info' }}">{{ goal.status|title }}</span><h3>{{ goal.title }}</h3></div>{% if goal.status == 'active' %}<form method="post" action="{{ url_for('mentorship.complete_goal', mentorship_id=mentorship.id, goal_id=goal.id) }}" data-confirm="Mark this mentorship goal as completed?">{{ action_form.hidden_tag() }}<button class="btn-secondary">Mark Complete</button></form>{% endif %}</div><p>{{ goal.description }}</p><time datetime="{{ goal.created_at.isoformat() }}">Created {{ goal.created_at.strftime('%d %b %Y') }}</time></article>{% endfor %}</div>
+            {% else %}<div class="compact-empty"><span class="empty-state-icon">{{ icon('target') }}</span><h3>{{ 'No mentorship goals have been created yet.' if mentor_view else "You haven't added any mentorship goals yet." }}</h3><p>Create a focused development outcome to guide this relationship.</p></div>{% endif %}
+            <form class="mentorship-inline-form" method="post" action="{{ url_for('mentorship.create_goal', mentorship_id=mentorship.id) }}" novalidate>
+                <h3>Create a goal</h3><p>Define one clear professional outcome to work towards.</p>{{ goal_form.hidden_tag() }}
+                <label class="form-label" for="{{ goal_form.title.id }}">{{ goal_form.title.label.text }}</label>{{ goal_form.title(class="form-input", placeholder="Build and publish a responsive portfolio website") }}
+                <label class="form-label" for="{{ goal_form.description.id }}">{{ goal_form.description.label.text }}</label>{{ goal_form.description(class="form-input", rows="4", placeholder="Describe what success should look like for this goal.") }}
+                {{ goal_form.submit(class="btn-primary") }}
+            </form>
+        </section>
+
+        <section class="dashboard-panel" id="progress" aria-labelledby="progress-heading">
+            <div class="panel-heading"><div><p class="dashboard-eyebrow">Progress and guidance</p><h2 id="progress-heading">Recent Progress</h2></div><span class="workspace-section-icon">{{ icon('activity') }}</span></div>
+            {% if updates %}<div class="mentorship-update-list">{% for update in updates %}<article class="mentorship-update-card"><header>{{ avatar(update.author) }}<div><strong>{{ update.author.full_name }}</strong><time datetime="{{ update.created_at.isoformat() }}">{{ update.created_at.strftime('%d %b %Y, %H:%M') }}</time></div></header>{% if update.goal %}<p class="mentorship-linked-goal"><strong>Goal:</strong> {{ update.goal.title }}</p>{% endif %}<p class="mentorship-record-content">{{ update.content }}</p>{% if update.feedback_entries %}<div class="mentorship-attached-feedback">{% for feedback in update.feedback_entries|sort(attribute='created_at', reverse=true) %}<div><span>{{ icon('message') }}</span><p><strong>Mentor feedback</strong><time datetime="{{ feedback.created_at.isoformat() }}">{{ feedback.created_at.strftime('%d %b %Y') }}</time></p></div><p>{{ feedback.content }}</p>{% endfor %}</div>{% endif %}</article>{% endfor %}</div>
+            {% else %}<div class="compact-empty"><span class="empty-state-icon">{{ icon('activity') }}</span><h3>No progress updates yet</h3><p>{{ 'Updates shared by your mentee will appear here.' if mentor_view else 'Share your first update when you have progress to report.' }}</p></div>{% endif %}
+
+            {% if not mentor_view %}<form class="mentorship-inline-form" method="post" action="{{ url_for('mentorship.create_progress', mentorship_id=mentorship.id) }}" novalidate><h3>Add progress update</h3><p>Share what you completed, challenges you encountered, and what you plan to work on next.</p>{{ progress_form.hidden_tag() }}<label class="form-label" for="{{ progress_form.goal_id.id }}">{{ progress_form.goal_id.label.text }}</label>{{ progress_form.goal_id(class="form-input") }}<label class="form-label" for="{{ progress_form.content.id }}">{{ progress_form.content.label.text }}</label>{{ progress_form.content(class="form-input", rows="5", placeholder="Describe your progress, challenges, and next step.") }}{{ progress_form.submit(class="btn-primary") }}</form>{% endif %}
+
+            {% if mentor_view %}<form class="mentorship-inline-form" method="post" action="{{ url_for('mentorship.create_feedback', mentorship_id=mentorship.id) }}" novalidate><h3>Provide feedback</h3><p>Give clear, practical guidance that helps your mentee take the next step.</p>{{ feedback_form.hidden_tag() }}<div class="mentorship-form-grid"><div><label class="form-label" for="{{ feedback_form.progress_update_id.id }}">{{ feedback_form.progress_update_id.label.text }}</label>{{ feedback_form.progress_update_id(class="form-input") }}</div><div><label class="form-label" for="{{ feedback_form.goal_id.id }}">{{ feedback_form.goal_id.label.text }}</label>{{ feedback_form.goal_id(class="form-input") }}</div></div><label class="form-label" for="{{ feedback_form.content.id }}">{{ feedback_form.content.label.text }}</label>{{ feedback_form.content(class="form-input", rows="5", placeholder="Recognise progress and recommend a focused next step.") }}{{ feedback_form.submit(class="btn-primary") }}</form>{% endif %}
+        </section>
+    </main>
+
+    <aside class="mentorship-workspace-aside">
+        <section class="dashboard-panel" aria-labelledby="feedback-heading"><div class="panel-heading"><h2 id="feedback-heading">Mentor Feedback</h2><span class="workspace-section-icon">{{ icon('message') }}</span></div>{% if feedback_entries %}<div class="mentorship-feedback-list">{% for feedback in feedback_entries[:5] %}<article><div><strong>{{ feedback.mentor.full_name }}</strong><time datetime="{{ feedback.created_at.isoformat() }}">{{ feedback.created_at.strftime('%d %b %Y') }}</time></div>{% if feedback.goal %}<span>For {{ feedback.goal.title }}</span>{% endif %}<p>{{ feedback.content }}</p></article>{% endfor %}</div>{% else %}<div class="compact-empty"><h3>{{ 'No feedback has been provided yet.' if mentor_view else 'No mentor feedback has been added yet.' }}</h3></div>{% endif %}</section>
+        <section class="dashboard-panel" aria-labelledby="activity-heading"><div class="panel-heading"><h2 id="activity-heading">Activity</h2><span class="workspace-section-icon">{{ icon('calendar') }}</span></div><ol class="mentorship-activity-list">{% for activity in activities[:10] %}<li><span aria-hidden="true"></span><div><time datetime="{{ activity.date.isoformat() }}">{{ activity.date.strftime('%d %b') }}</time><p>{{ activity.text }}</p></div></li>{% endfor %}</ol></section>
+    </aside>
+</div>
+{% endblock %}
