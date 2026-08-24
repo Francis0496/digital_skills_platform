@@ -4,7 +4,7 @@ All significant project changes should be recorded by increment.
 
 ## Unreleased
 
-### Batch 3: Mentor UI/UX Refinement
+### Batch 3: Mentor and Client UI/UX Refinement
 Status: Completed
 
 Improved:
@@ -13,9 +13,15 @@ Improved:
 - Refined received-request review, status presentation, response controls, and empty states.
 - Improved active-mentee cards with learner location, skills, and relationship start dates.
 - Standardized mentor status badges, profile prompts, responsive cards, and page hierarchy.
+- Added a client command-centre dashboard using live opportunity, application, review, and notification data.
+- Standardized client navigation using the shared responsive authenticated sidebar.
+- Refined opportunity creation and editing with grouped, readable form sections.
+- Improved opportunity lifecycle management, application counts, and secure management actions.
+- Rebuilt applicant lists and application detail views around proposal, profile, portfolio, and status-review information.
+- Added responsive client cards, review layouts, status badges, and useful empty states.
 
 Scope:
-- No mentorship rules, models, migrations, authentication, authorization, ownership, or notification-generation logic changed.
+- No mentorship or application rules, models, migrations, authentication, authorization, ownership, or notification-generation logic changed.
 
 ### Batch 2: Freelancer/Learner UI/UX Refinement
 Status: Completed

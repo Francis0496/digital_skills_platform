@@ -202,6 +202,45 @@ img, svg { max-width: 100%; }
 .request-actions { display: flex; flex-direction: column; align-items: stretch; gap: 1rem; margin-top: 1.25rem; border-top: 1px solid #e2e8f0; padding-top: 1.25rem; }
 .request-actions legend { margin-bottom: .55rem; color: #475569; font-size: .75rem; font-weight: 800; }
 .request-actions fieldset > label { display: inline-flex; min-height: 2.75rem; align-items: center; gap: .45rem; margin-right: 1rem; font-size: .875rem; }
+.client-application-list > article { display: grid; grid-template-columns: auto minmax(0,1fr) auto; gap: .75rem; border-bottom: 1px solid #e2e8f0; padding-block: 1rem; }
+.client-application-list > article:last-child { border-bottom: 0; }
+.client-application-list h3 { font-weight: 800; }
+.client-application-list p, .client-application-list time { color: #64748b; font-size: .75rem; }
+.client-application-list article > div:last-child { display: flex; flex-direction: column; align-items: flex-end; gap: .55rem; }
+.client-opportunity-list { display: grid; gap: 1rem; margin-top: 1.5rem; }
+.client-opportunity-card { display: flex; flex-direction: column; gap: 1.25rem; }
+.client-opportunity-card h2 { margin-top: .75rem; font-size: 1.15rem; font-weight: 800; }
+.client-opportunity-card p { margin-top: .25rem; color: #64748b; font-size: .8rem; }
+.client-opportunity-card dl { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: .8rem; margin-top: 1rem; }
+.client-opportunity-card dt, .application-content dt { color: #94a3b8; font-size: .7rem; font-weight: 700; text-transform: uppercase; }
+.client-opportunity-card dd, .application-content dd { color: #334155; font-size: .8rem; font-weight: 700; }
+.client-opportunity-actions { display: flex; flex-wrap: wrap; gap: .6rem; }
+.opportunity-form-shell { max-width: 50rem; }
+.opportunity-form-shell header h1 { margin-top: .35rem; font-size: 2rem; font-weight: 800; }
+.opportunity-form-shell header > p:last-child { margin-top: .6rem; color: #64748b; }
+.opportunity-form { display: grid; gap: 1.5rem; margin-top: 1.5rem; }
+.opportunity-form section { display: grid; gap: 1rem; }
+.opportunity-form section + section { border-top: 1px solid #e2e8f0; padding-top: 1.5rem; }
+.opportunity-form h2 { font-weight: 800; }
+.opportunity-form section > p { margin-top: -.75rem; color: #64748b; font-size: .8rem; }
+.form-actions { display: flex; flex-direction: column-reverse; gap: .75rem; border-top: 1px solid #e2e8f0; padding-top: 1.25rem; }
+.application-review-grid { display: grid; grid-template-columns: minmax(0,1fr); gap: 1rem; margin-top: 1.5rem; }
+.application-review-card > p { margin-top: 1rem; color: #475569; font-size: .875rem; line-height: 1.5rem; }
+.application-review-footer { display: flex; flex-direction: column; align-items: stretch; gap: 1rem; margin-top: 1.25rem; border-top: 1px solid #e2e8f0; padding-top: 1rem; }
+.application-review-footer strong { color: #334155; font-size: .875rem; }
+.applicant-detail-layout { display: grid; gap: 1.25rem; margin-top: 1.25rem; }
+.application-content h1 { margin-top: .35rem; font-size: 1.75rem; font-weight: 800; }
+.application-content section { margin-top: 2rem; }
+.application-content section h2, .status-update-form h3 { font-weight: 800; }
+.application-content section p { margin-top: .75rem; white-space: pre-line; overflow-wrap: anywhere; color: #475569; line-height: 1.75rem; }
+.application-content dl { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 1rem; margin-top: 2rem; border-top: 1px solid #e2e8f0; padding-top: 1.25rem; }
+.applicant-summary { align-self: start; }
+.learner-sidebar-avatar.large { width: 4rem; height: 4rem; font-size: 1.35rem; }
+.applicant-summary h2 { margin-top: 1rem; font-size: 1.15rem; font-weight: 800; }
+.applicant-summary > p { margin-top: .25rem; color: #64748b; font-size: .875rem; }
+.applicant-summary .applicant-bio { margin-block: 1rem; line-height: 1.5rem; }
+.applicant-links { display: grid; gap: .65rem; margin-top: 1.25rem; }
+.status-update-form { display: grid; gap: .75rem; margin-top: 1.5rem; border-top: 1px solid #e2e8f0; padding-top: 1.5rem; }
 
 @media (min-width: 640px) {
     .public-container { padding-inline: 1.5rem; }
@@ -219,6 +258,12 @@ img, svg { max-width: 100%; }
     .course-card-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
     .mentor-card-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
     .request-actions { flex-direction: row; align-items: end; justify-content: space-between; }
+    .client-opportunity-card { flex-direction: row; align-items: center; justify-content: space-between; }
+    .client-opportunity-main { flex: 1; }
+    .client-opportunity-actions { max-width: 19rem; justify-content: flex-end; }
+    .form-actions { flex-direction: row; justify-content: flex-end; }
+    .application-review-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+    .application-review-footer { flex-direction: row; align-items: center; justify-content: space-between; }
 }
 
 @media (min-width: 768px) {
@@ -252,6 +297,7 @@ img, svg { max-width: 100%; }
     .lesson-navigation summary { cursor: default; list-style: none; }
     .lesson-navigation summary::-webkit-details-marker { display: none; }
     .mentor-card-grid:not(.compact) { grid-template-columns: repeat(3,minmax(0,1fr)); }
+    .applicant-detail-layout { grid-template-columns: minmax(0,1fr) 20rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {

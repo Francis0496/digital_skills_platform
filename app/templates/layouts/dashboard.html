@@ -9,7 +9,7 @@
 {% block content %}
 <div class="dashboard-shell {{ 'learner-shell' if current_user.role_name == 'freelancer' }}">
     <button id="dashboard-backdrop" class="dashboard-backdrop hidden lg:hidden" type="button" aria-label="Close dashboard navigation"></button>
-    <aside id="dashboard-sidebar" class="dashboard-sidebar hidden lg:block {{ 'learner-sidebar' if current_user.role_name in ['freelancer', 'mentor'] }}" aria-label="{{ current_user.role_name | title }} navigation">
+    <aside id="dashboard-sidebar" class="dashboard-sidebar hidden lg:block {{ 'learner-sidebar' if current_user.role_name in ['freelancer', 'mentor', 'client'] }}" aria-label="{{ current_user.role_name | title }} navigation">
         {% if current_user.role_name == 'freelancer' %}
         <div class="learner-sidebar-heading"><span class="learner-sidebar-avatar">{{ current_user.full_name[:1]|upper }}</span><div><strong>{{ current_user.full_name }}</strong><span>Freelancer</span></div></div>
         <nav class="learner-navigation">
@@ -36,16 +36,23 @@
             {{ mentor_link('notifications.index', 'Notifications', 'bell', request.endpoint and request.endpoint.startswith('notifications.')) }}
         </nav>
         <form class="learner-sidebar-logout" method="post" action="{{ url_for('auth.logout') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button type="submit">{{ icon('arrow') }}<span>Log out</span></button></form>
+        {% elif current_user.role_name == 'client' %}
+        <div class="learner-sidebar-heading"><span class="learner-sidebar-avatar">{{ current_user.full_name[:1]|upper }}</span><div><strong>{{ current_user.full_name }}</strong><span>Client</span></div></div>
+        <nav class="learner-navigation">
+            {{ mentor_link('users.dashboard', 'Dashboard', 'dashboard', request.endpoint == 'users.dashboard') }}
+            {{ mentor_link('users.profile', 'Client Profile', 'user', request.endpoint in ['users.profile','users.edit_profile']) }}
+            {{ mentor_link('opportunities.create', 'Post Opportunity', 'skills', request.endpoint == 'opportunities.create') }}
+            {{ mentor_link('opportunities.mine', 'My Opportunities', 'briefcase', request.endpoint in ['opportunities.mine','opportunities.edit'] or (request.endpoint == 'opportunities.detail' and current_user.role_name == 'client')) }}
+            {{ mentor_link('opportunities.mine', 'Applications', 'document', request.endpoint and request.endpoint.startswith('applications.')) }}
+            {{ mentor_link('notifications.index', 'Notifications', 'bell', request.endpoint and request.endpoint.startswith('notifications.')) }}
+        </nav>
+        <form class="learner-sidebar-logout" method="post" action="{{ url_for('auth.logout') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button type="submit">{{ icon('arrow') }}<span>Log out</span></button></form>
         {% else %}
         <p class="mb-3 px-3 text-xs font-bold uppercase tracking-wider text-slate-500">{{ current_user.role_name | title }}</p>
         <nav class="space-y-1">
             <a class="sidebar-link {{ 'sidebar-link-active' if request.endpoint == 'users.dashboard' else 'text-slate-700 hover:bg-slate-100' }}" href="{{ url_for('users.dashboard') }}">Dashboard</a>
             <a class="sidebar-link" href="{{ url_for('notifications.index') }}">Notifications</a>
-            {% if current_user.role_name == 'client' %}
-            <a class="sidebar-link" href="{{ url_for('users.profile') }}">Client Profile</a><a class="sidebar-link" href="{{ url_for('opportunities.create') }}">Post Opportunity</a><a class="sidebar-link" href="{{ url_for('opportunities.mine') }}">My Opportunities</a>
-            {% else %}
             <a class="sidebar-link" href="{{ url_for('users.profile') }}">Profile</a><a class="sidebar-link" href="{{ url_for('admin.dashboard') }}">Statistics Dashboard</a><a class="sidebar-link" href="{{ url_for('admin.users') }}">Users</a><a class="sidebar-link" href="{{ url_for('admin.skills') }}">Skills</a><a class="sidebar-link" href="{{ url_for('admin.learning') }}">Learning Content</a><a class="sidebar-link" href="{{ url_for('opportunities.oversight') }}">Opportunities</a><a class="sidebar-link" href="{{ url_for('applications.oversight') }}">Applications</a><a class="sidebar-link" href="{{ url_for('admin.mentorships') }}">Mentorships</a>
-            {% endif %}
         </nav>
         {% endif %}
     </aside>

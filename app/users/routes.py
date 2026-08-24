@@ -160,6 +160,36 @@ def dashboard():
             unread_notification_count=sum(not item.is_read for item in recent_notifications),
             mentor_profile=current_user.mentor_profile,
         )
+    elif current_user.role_name == "client":
+        opportunities = db.session.scalars(
+            db.select(FreelanceOpportunity)
+            .where(FreelanceOpportunity.client_id == current_user.id)
+            .order_by(FreelanceOpportunity.created_at.desc())
+        ).all()
+        opportunity_ids = [item.id for item in opportunities]
+        applications = (
+            db.session.scalars(
+                db.select(JobApplication)
+                .where(JobApplication.opportunity_id.in_(opportunity_ids))
+                .order_by(JobApplication.submitted_at.desc())
+            ).all()
+            if opportunity_ids
+            else []
+        )
+        recent_notifications = db.session.scalars(
+            db.select(Notification)
+            .where(Notification.user_id == current_user.id)
+            .order_by(Notification.created_at.desc())
+            .limit(5)
+        ).all()
+        context.update(
+            client_opportunities=opportunities,
+            client_applications=applications,
+            active_opportunity_count=sum(item.effective_status == "active" for item in opportunities),
+            closed_opportunity_count=sum(item.effective_status == "closed" for item in opportunities),
+            pending_review_count=sum(item.status in {"pending", "under_review"} for item in applications),
+            recent_notifications=recent_notifications,
+        )
     return render_template("users/dashboard.html", **context)
 
 
