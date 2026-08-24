@@ -30,7 +30,7 @@ Opportunities{% endblock %}{% block content %}
         <div>
           <dt class="font-bold text-slate-500">Budget</dt>
           <dd>
-            {{ '%.2f'|format(opportunity.budget) if opportunity.budget is not
+            {{ opportunity.budget|sle if opportunity.budget is not
             none else 'Not specified' }}
           </dd>
         </div>

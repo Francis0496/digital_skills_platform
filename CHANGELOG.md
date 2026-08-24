@@ -4,6 +4,11 @@ All significant project changes should be recorded by increment.
 
 ## Unreleased
 
+### Leone Currency Presentation
+
+- Added explicit `SLE` formatting to opportunity-detail budgets and labelled opportunity/application amount fields in Sierra Leonean leones.
+- Preserved the existing decimal storage and validation behavior; no currency conversion or schema change was introduced.
+
 ### Administrator Responsive Workspace Correction
 
 - Refined Learning Content so category/course panels remain stacked at compact desktop widths and use a balanced split only on wide screens.

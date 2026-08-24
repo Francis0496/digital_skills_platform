@@ -11,7 +11,7 @@ def data(**overrides):
 
 def test_job_01_client_creates_and_edits_opportunity(client,user_factory):
     user=user_factory(role_name="client"); login(client); response=client.post("/opportunities/new",data=data(),follow_redirects=True); job=db.session.scalar(db.select(FreelanceOpportunity))
-    assert b"Opportunity created" in response.data; assert job.client_id==user.id; assert job.budget==Decimal("1500.00")
+    assert b"Opportunity created" in response.data; assert job.client_id==user.id; assert job.budget==Decimal("1500.00"); assert b"SLE 1,500.00" in response.data
     response=client.post(f"/opportunities/{job.id}/edit",data=data(title="Updated Website"),follow_redirects=True); assert b"Opportunity updated" in response.data
 
 @pytest.mark.parametrize("role",("freelancer","mentor"))

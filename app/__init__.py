@@ -45,12 +45,18 @@ def create_app(config_class=None):
     register_account_checks(app)
     register_security_headers(app)
     configure_logging(app)
+    app.jinja_env.filters["sle"] = format_sle
 
     @app.context_processor
     def inject_global_template_values():
         return {"current_year": datetime.now(timezone.utc).year}
 
     return app
+
+
+def format_sle(value):
+    """Format an existing decimal amount in Sierra Leonean leones."""
+    return f"SLE {value:,.2f}"
 
 
 def register_security_headers(app):

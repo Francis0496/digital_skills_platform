@@ -7,7 +7,7 @@ class OpportunityForm(FlaskForm):
     title = StringField("Opportunity title", validators=[DataRequired(), Length(max=180)])
     description = TextAreaField("Description", validators=[DataRequired(), Length(max=10000)])
     category = StringField("Category", validators=[Optional(), Length(max=100)])
-    budget = DecimalField("Budget", places=2, validators=[Optional(), NumberRange(min=0, max=9999999999)])
+    budget = DecimalField("Budget (SLE)", places=2, validators=[Optional(), NumberRange(min=0, max=9999999999)])
     deadline = DateField("Application deadline", validators=[Optional()])
     submit = SubmitField("Save opportunity")
     def validate_deadline(self, field):
