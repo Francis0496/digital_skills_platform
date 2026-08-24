@@ -72,7 +72,8 @@ def register_security_headers(app):
             "Content-Security-Policy",
             "default-src 'self'; base-uri 'self'; form-action 'self'; "
             "frame-ancestors 'none'; img-src 'self' data:; object-src 'none'; "
-            "script-src 'self'; style-src 'self' 'unsafe-inline'",
+            "frame-src https://www.youtube-nocookie.com https://player.vimeo.com; "
+            "media-src 'self' https:; script-src 'self'; style-src 'self' 'unsafe-inline'",
         )
         if app.config.get("ENV_NAME") == "production":
             response.headers.setdefault(

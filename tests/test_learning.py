@@ -3,6 +3,7 @@ from sqlalchemy.exc import IntegrityError
 
 from app.extensions import db
 from app.models import Course, CourseCategory, Enrollment, Lesson, LessonProgress
+from app.courses.routes import _lesson_video_source
 
 
 def login(client, email="learner@example.com"):
@@ -198,6 +199,54 @@ def test_learning_01b_lesson_content_uses_an_isolated_scroll_region(
     assert b'role="region"' in response.data
     assert b'tabindex="0"' in response.data
     assert b'class="lesson-reader-actions"' in response.data
+
+
+@pytest.mark.parametrize(
+    ("video_url", "kind", "expected"),
+    (
+        (
+            "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+            "embed",
+            "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?rel=0",
+        ),
+        (
+            "https://vimeo.com/76979871",
+            "embed",
+            "https://player.vimeo.com/video/76979871",
+        ),
+        ("https://cdn.example.com/lesson.mp4", "file", "lesson.mp4"),
+    ),
+)
+def test_learning_01c_approved_video_sources_are_normalized(
+    video_url, kind, expected
+):
+    source = _lesson_video_source(video_url)
+    assert source["kind"] == kind
+    assert expected in source["url"]
+
+
+def test_learning_01d_lesson_video_plays_inside_platform(
+    client, user_factory, course_factory
+):
+    user = user_factory()
+    course = course_factory()
+    course.lessons[0].video_url = "https://youtu.be/dQw4w9WgXcQ"
+    enrollment = Enrollment(user=user, course=course)
+    db.session.add(enrollment)
+    db.session.commit()
+    login(client)
+
+    response = client.get(f"/courses/learn/{enrollment.id}/{course.lessons[0].id}")
+
+    assert response.status_code == 200
+    assert b'class="lesson-video-frame"' in response.data
+    assert b"youtube-nocookie.com/embed/dQw4w9WgXcQ" in response.data
+    assert b"allowfullscreen" in response.data
+    assert b">Open lesson video</a>" not in response.data
+
+
+def test_learning_01e_unapproved_video_provider_is_not_embedded():
+    assert _lesson_video_source("https://untrusted.example/video/123") is None
 
 
 def test_learning_02_learner_cannot_open_another_enrollment(client, user_factory, course_factory):

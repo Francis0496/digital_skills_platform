@@ -247,6 +247,10 @@ h1, h2, h3, h4, p, li, dd, dt, a { overflow-wrap: anywhere; }
 .lesson-reader-header { flex: none; }
 .lesson-reader-header h1 { margin-top: .5rem; color: #0f172a; font-size: clamp(1.6rem,4vw,2rem); font-weight: 850; line-height: 1.2; }
 .lesson-reader-header .btn-secondary { margin-top: 1.25rem; }
+.lesson-video { margin-top: 1.5rem; overflow: hidden; border: 1px solid #cbd5e1; border-radius: .8rem; background: #020617; box-shadow: 0 8px 18px rgb(15 23 42 / .12); }
+.lesson-video-frame { position: relative; width: 100%; aspect-ratio: 16 / 9; }
+.lesson-video-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.lesson-video video { display: block; width: 100%; max-height: min(60vh,38rem); background: #020617; }
 .lesson-content-scroll { max-height: clamp(20rem,55vh,42rem); margin-top: 1.5rem; overflow-x: hidden; overflow-y: auto; overscroll-behavior-y: auto; scrollbar-gutter: stable; border-block: 1px solid #e2e8f0; padding: 1.25rem .75rem 1.25rem 0; }
 .lesson-content-scroll:focus-visible { border-radius: .4rem; outline-offset: 2px; }
 .lesson-content-body { white-space: pre-line; overflow-wrap: anywhere; color: #334155; line-height: 1.75rem; }

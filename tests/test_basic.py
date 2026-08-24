@@ -20,6 +20,12 @@ def test_foundation_03_home_contains_platform_name(client):
     assert b"Digital Skills Platform" in response.data
 
 
+def test_foundation_03b_csp_allows_only_approved_lesson_players(client):
+    policy = client.get("/").headers["Content-Security-Policy"]
+    assert "frame-src https://www.youtube-nocookie.com https://player.vimeo.com" in policy
+    assert "media-src 'self' https:" in policy
+
+
 def test_foundation_04_unknown_route_uses_custom_404(client):
     response = client.get("/route-that-does-not-exist")
     assert response.status_code == 404

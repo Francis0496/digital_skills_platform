@@ -13,8 +13,13 @@
         <header class="lesson-reader-header">
             <p class="text-sm font-bold uppercase tracking-wider text-teal-700">Lesson {{ lesson.lesson_order }}</p>
             <h1>{{ lesson.title }}</h1>
-            {% if lesson.video_url %}<a class="btn-secondary" href="{{ lesson.video_url }}" target="_blank" rel="noopener noreferrer">Open lesson video</a>{% endif %}
+            {% if lesson.video_url and not video_source %}<a class="btn-secondary" href="{{ lesson.video_url }}" target="_blank" rel="noopener noreferrer">Open lesson video</a>{% endif %}
         </header>
+
+        {% if video_source %}<section class="lesson-video" aria-label="Lesson video">
+            {% if video_source.kind == 'embed' %}<div class="lesson-video-frame"><iframe src="{{ video_source.url }}" title="{{ lesson.title }} — {{ video_source.provider }} video" loading="lazy" allow="accelerometer; autoplay; encrypted-media; picture-in-picture; fullscreen" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
+            {% else %}<video controls preload="metadata"><source src="{{ video_source.url }}">Your browser cannot play this lesson video. <a href="{{ lesson.video_url }}" target="_blank" rel="noopener noreferrer">Open the video</a>.</video>{% endif %}
+        </section>{% endif %}
 
         <div class="lesson-content-scroll" role="region" aria-label="Lesson content for {{ lesson.title }}" tabindex="0">
             <div class="lesson-content-body">{{ lesson.content }}</div>

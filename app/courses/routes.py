@@ -1,4 +1,7 @@
 from datetime import datetime, timezone
+from pathlib import PurePosixPath
+import re
+from urllib.parse import parse_qs, urlparse
 
 from flask import abort, flash, redirect, render_template, request, url_for
 from flask_login import current_user
@@ -10,6 +13,50 @@ from app.models import Course, CourseCategory, Enrollment, Lesson, LessonProgres
 from app.admin.forms import ActionForm
 from . import bp
 from app.notifications.service import notify
+
+
+VIDEO_ID_PATTERN = re.compile(r"^[A-Za-z0-9_-]{6,20}$")
+
+
+def _lesson_video_source(video_url):
+    """Return a safe player source for approved providers or direct video files."""
+    if not video_url:
+        return None
+    parsed = urlparse(video_url.strip())
+    if parsed.scheme not in {"http", "https"}:
+        return None
+    host = (parsed.hostname or "").lower()
+    host = host[4:] if host.startswith("www.") else host
+
+    video_id = None
+    if host == "youtu.be":
+        video_id = parsed.path.strip("/").split("/")[0]
+    elif host in {"youtube.com", "m.youtube.com"}:
+        if parsed.path == "/watch":
+            video_id = parse_qs(parsed.query).get("v", [None])[0]
+        elif parsed.path.startswith(("/embed/", "/shorts/")):
+            video_id = parsed.path.strip("/").split("/")[1]
+    if video_id and VIDEO_ID_PATTERN.fullmatch(video_id):
+        return {
+            "kind": "embed",
+            "url": f"https://www.youtube-nocookie.com/embed/{video_id}?rel=0",
+            "provider": "YouTube",
+        }
+
+    if host in {"vimeo.com", "player.vimeo.com"}:
+        parts = [part for part in parsed.path.split("/") if part]
+        video_id = next((part for part in reversed(parts) if part.isdigit()), None)
+        if video_id:
+            return {
+                "kind": "embed",
+                "url": f"https://player.vimeo.com/video/{video_id}",
+                "provider": "Vimeo",
+            }
+
+    extension = PurePosixPath(parsed.path).suffix.lower()
+    if extension in {".mp4", ".webm", ".ogg"}:
+        return {"kind": "file", "url": video_url.strip(), "provider": "Video"}
+    return None
 
 
 @bp.get("/")
@@ -116,6 +163,7 @@ def learn(enrollment_id, lesson_id):
         previous_lesson=lessons[index - 1] if index > 0 else None,
         next_lesson=lessons[index + 1] if index + 1 < len(lessons) else None,
         action_form=ActionForm(),
+        video_source=_lesson_video_source(lesson.video_url),
     )
 
 

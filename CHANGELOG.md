@@ -4,6 +4,12 @@ All significant project changes should be recorded by increment.
 
 ## Unreleased
 
+### Embedded Lesson Video Playback
+
+- Added responsive in-platform playback for approved YouTube and Vimeo lesson links.
+- Added native browser playback for direct MP4, WebM, and Ogg lesson files.
+- Added provider allowlisting, privacy-enhanced YouTube embeds, CSP permissions, and a safe external fallback for unsupported URLs.
+
 ### Isolated Lesson Content Scrolling
 
 - Added a dedicated keyboard-accessible scroll region for long lesson content.
