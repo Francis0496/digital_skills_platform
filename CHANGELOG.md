@@ -4,6 +4,12 @@ All significant project changes should be recorded by increment.
 
 ## Unreleased
 
+### Premium Learning Category Collection
+
+- Rebuilt administrator learning categories as a polished responsive card collection with clearer visual hierarchy and pathway descriptions.
+- Added at-a-glance category and course counts, distinct category icons, and a more discoverable edit action.
+- Improved empty-state guidance and adaptive one/two-column layouts across mobile, tablet, and wide admin workspaces.
+
 ### Authenticated Navigation Continuity
 
 - Added a persistent responsive Workspace control to the shared authenticated header on public and role-specific pages.

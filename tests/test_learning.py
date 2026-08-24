@@ -117,6 +117,23 @@ def test_course_05_duplicate_category_name_is_rejected(client, user_factory):
     assert b"already exists" in response.data
 
 
+def test_course_05b_admin_category_collection_has_clear_management_ui(
+    client, user_factory, course_factory
+):
+    course_factory()
+    user_factory(role_name="administrator")
+    login(client)
+
+    response = client.get("/admin/learning")
+
+    assert response.status_code == 200
+    assert b"learning-category-grid" in response.data
+    assert b"Course library" in response.data
+    assert b"<strong>1</strong><span>category</span>" in response.data
+    assert b"2 lessons" in response.data
+    assert b"Edit category" in response.data
+
+
 def test_course_06_database_enforces_lesson_order_uniqueness(app, course_factory):
     course = course_factory(lesson_count=1)
     db.session.add(
