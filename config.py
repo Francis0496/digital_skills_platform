@@ -15,6 +15,7 @@ class Config:
     REMEMBER_COOKIE_HTTPONLY = True
     REMEMBER_COOKIE_SAMESITE = "Lax"
     SEND_FILE_MAX_AGE_DEFAULT = 3600
+    STATIC_ASSET_VERSION = "2026.08.24.2"
 
 
 class DevelopmentConfig(Config):

@@ -20,7 +20,7 @@
                 </form>
             </div>
         {% else %}
-            <div class="hidden items-center gap-1 lg:flex">
+            <div class="desktop-navigation">
                 {% set public_links = [
                     ('main.index', 'Home'),
                     ('courses.catalogue', 'Courses'),
@@ -36,7 +36,7 @@
                 <a class="nav-link" href="{{ url_for('auth.login') }}">Log in</a>
                 <a class="btn-primary ml-2" href="{{ url_for('auth.register') }}">Register</a>
             </div>
-            <button class="mobile-menu-button menu-button lg:hidden" type="button" aria-controls="mobile-menu" aria-expanded="false" aria-label="Open navigation menu">
+            <button class="mobile-menu-button menu-button" type="button" aria-controls="mobile-menu" aria-expanded="false" aria-label="Open navigation menu">
                 <svg class="menu-icon-open h-6 w-6" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16"/>
                 </svg>
@@ -48,7 +48,7 @@
     </nav>
 
     {% if not current_user.is_authenticated %}
-        <div id="mobile-menu" class="mobile-menu hidden lg:hidden">
+        <div id="mobile-menu" class="mobile-menu hidden">
             <nav class="flex flex-col gap-1" aria-label="Mobile navigation">
                 {% for endpoint, label in public_links %}
                     {% set is_active = request.endpoint == endpoint or (endpoint.split('.')[0] == request.blueprint and endpoint != 'main.index') %}

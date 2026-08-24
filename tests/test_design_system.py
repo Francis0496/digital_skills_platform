@@ -17,6 +17,11 @@ def test_design_01_public_navigation_has_mobile_control(client):
     assert b"coming later" not in response.data.lower()
     assert b"branding_package/logo-full.svg" in response.data
     assert b"branding_package/favicon-32x32.png" in response.data
+    assert b'class="desktop-navigation"' in response.data
+    assert b'class="mobile-menu-button menu-button"' in response.data
+    assert b'class="hero-actions"' in response.data
+    assert b"hero-feature-card" not in response.data
+    assert b"?v=2026.08.24.2" in response.data
     for path in (b"/courses/", b"/opportunities/", b"/mentorship/mentors", b"/about"):
         assert path in response.data
 
@@ -89,3 +94,10 @@ def test_design_05_reusable_component_styles_are_served(client):
     assert response.status_code == 200
     for component in (b".btn-primary", b".form-input", b".card", b".badge", b".alert"):
         assert component in response.data
+    for responsive_rule in (
+        b".desktop-navigation { display: none",
+        b".mobile-menu-button { display: none",
+        b".pathway-grid { grid-template-columns: repeat(4",
+        b"box-sizing: border-box",
+    ):
+        assert responsive_rule in response.data

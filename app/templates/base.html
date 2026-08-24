@@ -9,9 +9,9 @@
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='branding_package/favicon.ico') }}">
     <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='branding_package/favicon-32x32.png') }}">
     <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='branding_package/favicon-16x16.png') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='branding_package/brand-tokens.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/tailwind.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='branding_package/brand-tokens.css', v=config.STATIC_ASSET_VERSION) }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/tailwind.css', v=config.STATIC_ASSET_VERSION) }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css', v=config.STATIC_ASSET_VERSION) }}">
     {% block head %}{% endblock %}
 </head>
 <body class="flex min-h-screen flex-col bg-slate-50 text-slate-900 antialiased">
@@ -25,7 +25,7 @@
     </main>
 
     {% include "components/footer.html" %}
-    <script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/app.js', v=config.STATIC_ASSET_VERSION) }}" defer></script>
     {% block scripts %}{% endblock %}
 </body>
 </html>

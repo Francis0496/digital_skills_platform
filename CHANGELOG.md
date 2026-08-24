@@ -15,6 +15,14 @@ Improved:
 - Refined login and registration with responsive branded layouts, clearer hierarchy, password guidance, and accessible validation states.
 - Standardized public buttons, cards, links, forms, icons, focus states, and responsive spacing.
 
+Homepage correction:
+- Made desktop navigation and mobile-menu switching resilient at the 1024px breakpoint.
+- Added versioned static asset URLs to prevent stale Tailwind and component CSS after releases.
+- Reduced the hero to a focused content-driven layout with readable copy and content-sized actions.
+- Removed the decorative hero checkmark row and oversized visual-card composition.
+- Made pathway, course, opportunity, mentorship, final CTA, and footer layouts compact and breakpoint-safe.
+- Removed the custom container's dependency on Tailwind preflight for border-box sizing, eliminating the identified page-overflow risk.
+
 Scope:
 - No business workflow, authorization rule, model, migration, or database schema was changed.
 
