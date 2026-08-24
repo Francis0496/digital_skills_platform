@@ -1,8 +1,29 @@
 {% extends "layouts/dashboard.html" %}
 {% block title %}{{ lesson.title }} | Digital Skills Platform{% endblock %}
 {% block dashboard_content %}
-<div class="grid gap-6 lg:grid-cols-[17rem_minmax(0,1fr)]">
-    <aside class="card self-start"><p class="text-xs font-bold uppercase tracking-wider text-slate-500">Course lessons</p><h2 class="mt-2 font-bold">{{ enrollment.course.title }}</h2><div class="course-progress"><div><span>Progress</span><strong>{{ enrollment.progress_percentage }}%</strong></div><progress class="progress-track" max="100" value="{{ enrollment.progress_percentage }}">{{ enrollment.progress_percentage }}%</progress></div><ol class="mt-5 space-y-1">{% for item in lessons %}<li><a class="sidebar-link {{ 'sidebar-link-active' if item.id == lesson.id else 'text-slate-700 hover:bg-slate-100' }}" href="{{ url_for('courses.learn', enrollment_id=enrollment.id, lesson_id=item.id) }}">{{ item.lesson_order }}. {{ item.title }}</a></li>{% endfor %}</ol></aside>
-    <article class="card"><p class="text-sm font-bold uppercase tracking-wider text-teal-700">Lesson {{ lesson.lesson_order }}</p><h1 class="mt-2 text-3xl font-bold">{{ lesson.title }}</h1>{% if lesson.video_url %}<a class="btn-secondary mt-5" href="{{ lesson.video_url }}" target="_blank" rel="noopener noreferrer">Open lesson video</a>{% endif %}<div class="mt-8 whitespace-pre-line leading-7 text-slate-700">{{ lesson.content }}</div><div class="mt-10 flex flex-col gap-3 border-t border-slate-200 pt-6 sm:flex-row sm:items-center sm:justify-between"><div>{% if previous_lesson %}<a class="btn-secondary" href="{{ url_for('courses.learn', enrollment_id=enrollment.id, lesson_id=previous_lesson.id) }}">Previous</a>{% endif %}</div><div class="flex gap-3">{% if not progress or not progress.completed %}<form method="post" action="{{ url_for('courses.complete_lesson', enrollment_id=enrollment.id, lesson_id=lesson.id) }}">{{ action_form.hidden_tag() }}<button class="btn-primary" type="submit">Mark complete</button></form>{% else %}<span class="badge badge-success self-center">Completed</span>{% endif %}{% if next_lesson %}<a class="btn-secondary" href="{{ url_for('courses.learn', enrollment_id=enrollment.id, lesson_id=next_lesson.id) }}">Next</a>{% endif %}</div></div></article>
+<div class="lesson-layout">
+    <aside class="card lesson-navigation">
+        <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Course lessons</p>
+        <h2>{{ enrollment.course.title }}</h2>
+        <div class="course-progress"><div><span>Progress</span><strong>{{ enrollment.progress_percentage }}%</strong></div><progress class="progress-track" max="100" value="{{ enrollment.progress_percentage }}">{{ enrollment.progress_percentage }}%</progress></div>
+        <ol>{% for item in lessons %}<li><a class="sidebar-link {{ 'sidebar-link-active' if item.id == lesson.id else 'text-slate-700 hover:bg-slate-100' }}" href="{{ url_for('courses.learn', enrollment_id=enrollment.id, lesson_id=item.id) }}">{{ item.lesson_order }}. {{ item.title }}</a></li>{% endfor %}</ol>
+    </aside>
+
+    <article class="card lesson-reader">
+        <header class="lesson-reader-header">
+            <p class="text-sm font-bold uppercase tracking-wider text-teal-700">Lesson {{ lesson.lesson_order }}</p>
+            <h1>{{ lesson.title }}</h1>
+            {% if lesson.video_url %}<a class="btn-secondary" href="{{ lesson.video_url }}" target="_blank" rel="noopener noreferrer">Open lesson video</a>{% endif %}
+        </header>
+
+        <div class="lesson-content-scroll" role="region" aria-label="Lesson content for {{ lesson.title }}" tabindex="0">
+            <div class="lesson-content-body">{{ lesson.content }}</div>
+        </div>
+
+        <footer class="lesson-reader-actions">
+            <div>{% if previous_lesson %}<a class="btn-secondary" href="{{ url_for('courses.learn', enrollment_id=enrollment.id, lesson_id=previous_lesson.id) }}">Previous</a>{% endif %}</div>
+            <div>{% if not progress or not progress.completed %}<form method="post" action="{{ url_for('courses.complete_lesson', enrollment_id=enrollment.id, lesson_id=lesson.id) }}">{{ action_form.hidden_tag() }}<button class="btn-primary" type="submit">Mark complete</button></form>{% else %}<span class="badge badge-success">Completed</span>{% endif %}{% if next_lesson %}<a class="btn-secondary" href="{{ url_for('courses.learn', enrollment_id=enrollment.id, lesson_id=next_lesson.id) }}">Next</a>{% endif %}</div>
+        </footer>
+    </article>
 </div>
 {% endblock %}

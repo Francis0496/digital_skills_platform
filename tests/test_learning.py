@@ -181,6 +181,25 @@ def test_learning_01_unenrolled_learner_cannot_open_lesson(client, user_factory,
     assert client.get(f"/courses/learn/999/{course.lessons[0].id}").status_code == 404
 
 
+def test_learning_01b_lesson_content_uses_an_isolated_scroll_region(
+    client, user_factory, course_factory
+):
+    user = user_factory()
+    course = course_factory()
+    enrollment = Enrollment(user=user, course=course)
+    db.session.add(enrollment)
+    db.session.commit()
+    login(client)
+
+    response = client.get(f"/courses/learn/{enrollment.id}/{course.lessons[0].id}")
+
+    assert response.status_code == 200
+    assert b'class="lesson-content-scroll"' in response.data
+    assert b'role="region"' in response.data
+    assert b'tabindex="0"' in response.data
+    assert b'class="lesson-reader-actions"' in response.data
+
+
 def test_learning_02_learner_cannot_open_another_enrollment(client, user_factory, course_factory):
     user_factory()
     other = user_factory(email="other@example.com")

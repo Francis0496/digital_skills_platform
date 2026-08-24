@@ -243,6 +243,16 @@ h1, h2, h3, h4, p, li, dd, dt, a { overflow-wrap: anywhere; }
 .lesson-navigation summary { cursor: pointer; color: #475569; font-size: .75rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
 .lesson-navigation h2 { margin-top: 1rem; font-weight: 800; }
 .lesson-navigation ol { display: grid; gap: .2rem; margin-top: 1rem; }
+.lesson-reader { display: flex; min-width: 0; flex-direction: column; overflow: hidden; }
+.lesson-reader-header { flex: none; }
+.lesson-reader-header h1 { margin-top: .5rem; color: #0f172a; font-size: clamp(1.6rem,4vw,2rem); font-weight: 850; line-height: 1.2; }
+.lesson-reader-header .btn-secondary { margin-top: 1.25rem; }
+.lesson-content-scroll { max-height: clamp(20rem,55vh,42rem); margin-top: 1.5rem; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; scrollbar-gutter: stable; border-block: 1px solid #e2e8f0; padding: 1.25rem .75rem 1.25rem 0; }
+.lesson-content-scroll:focus-visible { border-radius: .4rem; outline-offset: 2px; }
+.lesson-content-body { white-space: pre-line; overflow-wrap: anywhere; color: #334155; line-height: 1.75rem; }
+.lesson-reader-actions { display: flex; flex: none; flex-direction: column; gap: .8rem; padding-top: 1.25rem; }
+.lesson-reader-actions > div:last-child { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem; }
+.lesson-reader-actions .badge { align-self: center; }
 .mentor-dashboard-list > article { display: grid; grid-template-columns: auto minmax(0,1fr) auto; align-items: start; gap: .75rem; border-bottom: 1px solid #e2e8f0; padding-block: 1rem; }
 .mentor-dashboard-list > article:last-child { border-bottom: 0; }
 .mentor-dashboard-list h3, .mentor-profile-summary h3 { color: #0f172a; font-weight: 800; }
@@ -427,6 +437,7 @@ h1, h2, h3, h4, p, li, dd, dt, a { overflow-wrap: anywhere; }
     .mentorship-relationship-card dl { grid-template-columns: repeat(2,minmax(0,1fr)); }
     .mentorship-goal-heading { flex-direction: row; align-items: flex-start; justify-content: space-between; }
     .mentorship-form-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+    .lesson-reader-actions { flex-direction: row; align-items: center; justify-content: space-between; }
 }
 
 @media (max-width: 479px) {
