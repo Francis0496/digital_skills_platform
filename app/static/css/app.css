@@ -42,6 +42,8 @@ h1, h2, h3, h4, p, li, dd, dt, a { overflow-wrap: anywhere; }
 .mobile-nav-link:hover, .mobile-nav-link-active { background: #eef2ff; color: var(--brand-primary-dark); }
 .notification-count { position: absolute; right: -.25rem; top: -.25rem; min-width: 1.25rem; border: 2px solid white; border-radius: 999px; background: #dc2626; padding-inline: .25rem; color: white; font-size: .6875rem; line-height: 1rem; font-weight: 800; text-align: center; }
 .avatar { display: grid; width: 2.5rem; height: 2.5rem; flex: none; place-items: center; border-radius: 999px; background: #e0e7ff; color: var(--brand-primary-dark); font-weight: 800; }
+.topbar-user-name { display: none; max-width: 12rem; overflow: hidden; color: #334155; font-size: .8rem; font-weight: 750; text-overflow: ellipsis; white-space: nowrap; }
+.topbar-logout button, .nav-link { white-space: nowrap; }
 
 .btn-primary, .btn-secondary, .btn-danger, .btn-on-dark, .btn-hero-secondary { display: inline-flex; min-height: 2.75rem; max-width: 100%; align-items: center; justify-content: center; border: 1px solid transparent; border-radius: .55rem; padding: .625rem 1rem; overflow-wrap: anywhere; font-size: .875rem; line-height: 1.25rem; font-weight: 750; text-align: center; transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease, transform 150ms ease; }
 .btn-large { min-height: 3rem; padding-inline: 1.35rem; font-size: .9375rem; }
@@ -120,6 +122,7 @@ h1, h2, h3, h4, p, li, dd, dt, a { overflow-wrap: anywhere; }
 .dashboard-sidebar { position: fixed; inset: 0 auto 0 0; z-index: 50; width: min(18rem, calc(100vw - 3rem)); overflow-y: auto; border-right: 1px solid var(--brand-border); background: white; padding: 1.25rem; box-shadow: 12px 0 32px rgb(15 23 42 / .16); }
 .dashboard-backdrop { position: fixed; inset: 0; z-index: 40; width: 100%; border: 0; background: rgb(15 23 42 / .58); }
 .dashboard-menu-button { gap: .5rem; }
+.dashboard-menu-button .ui-icon { width: 1.15rem; height: 1.15rem; }
 .learner-sidebar { flex-direction: column; border-color: #1e293b; background: var(--brand-navy); color: white; }
 .learner-sidebar-heading { display: flex; align-items: center; gap: .75rem; border-bottom: 1px solid #334155; padding: .25rem .5rem 1.25rem; }
 .learner-sidebar-heading div { min-width: 0; }
@@ -134,6 +137,7 @@ h1, h2, h3, h4, p, li, dd, dt, a { overflow-wrap: anywhere; }
 .learner-sidebar-logout { margin-top: auto; border-top: 1px solid #334155; padding-top: 1rem; }
 .dashboard-page-header { display: flex; flex-direction: column; align-items: flex-start; gap: 1.25rem; }
 .dashboard-page-header h1 { margin-top: .35rem; color: #0f172a; font-size: clamp(1.75rem, 4vw, 2.35rem); line-height: 1.15; font-weight: 800; letter-spacing: -.025em; }
+.admin-welcome-header h1 { max-width: 48rem; }
 .dashboard-page-header p:last-child { max-width: 46rem; margin-top: .65rem; color: #64748b; line-height: 1.65; }
 .dashboard-eyebrow, .eyebrow { color: #0f766e; font-size: .75rem; line-height: 1rem; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; }
 .learner-stat-grid { display: grid; grid-template-columns: minmax(0,1fr); gap: 1rem; margin-top: 1.75rem; }
@@ -320,9 +324,7 @@ h1, h2, h3, h4, p, li, dd, dt, a { overflow-wrap: anywhere; }
 @media (max-width: 479px) {
     .site-nav { min-height: 4.25rem; gap: .5rem; padding-inline: .75rem; }
     .brand-logo { width: 7.75rem; }
-    .site-nav .avatar { display: none; }
     .site-nav > div { gap: .4rem; }
-    .site-nav form .btn-secondary { min-height: 2.5rem; padding-inline: .65rem; font-size: .75rem; }
     .dashboard-content { padding-inline: .75rem; }
     .card, .dashboard-panel { padding: 1rem; }
     .dashboard-page-header > .btn-primary, .dashboard-page-header > .btn-secondary { width: 100%; }
@@ -330,6 +332,15 @@ h1, h2, h3, h4, p, li, dd, dt, a { overflow-wrap: anywhere; }
     .empty-state { padding-inline: 1rem; }
     .learner-stat-grid, .admin-stat-grid { gap: .75rem; }
     .learner-stat-card { min-height: 5rem; }
+}
+
+@media (max-width: 767px) {
+    .dashboard-menu-button { width: 2.75rem; min-height: 2.75rem; padding: 0; }
+    .dashboard-menu-button span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; }
+}
+
+@media (max-width: 1023px) {
+    .topbar-logout { display: none; }
 }
 
 @media (min-width: 768px) {
@@ -382,6 +393,7 @@ h1, h2, h3, h4, p, li, dd, dt, a { overflow-wrap: anywhere; }
 
 @media (min-width: 1280px) {
     .learner-stat-grid, .admin-stat-grid { grid-template-columns: repeat(4,minmax(0,1fr)); }
+    .topbar-user-name { display: block; }
 }
 
 @media (prefers-reduced-motion: reduce) {

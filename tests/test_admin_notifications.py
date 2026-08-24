@@ -30,7 +30,9 @@ def test_admin_01_non_admin_denied(client,user_factory,role):
     for path in ("/admin/","/admin/users","/admin/skills","/admin/mentorships"): assert client.get(path).status_code==403
 
 def test_admin_02_dashboard_statistics(client,user_factory):
-    user_factory(role_name="administrator"); user_factory(email="client@example.com",role_name="client"); login(client); response=client.get("/admin/"); assert response.status_code==200; assert b"Platform overview" in response.data; assert b"Total Users" in response.data
+    user_factory(role_name="administrator"); user_factory(email="client@example.com",role_name="client"); login(client); response=client.get("/admin/"); assert response.status_code==200; assert b"Administration workspace" in response.data; assert b"Welcome back, Test User" in response.data; assert b"Total Users" in response.data
+    for stale_copy in (b"Increment 9", b"Authentication is ready", b"administration module is released", b"Next step"):
+        assert stale_copy not in response.data
 
 def test_admin_03_search_and_toggle_user(client,user_factory):
     admin=user_factory(role_name="administrator"); target=user_factory(email="target@example.com",role_name="client"); login(client); response=client.get("/admin/users?q=target"); assert b"target@example.com" in response.data; client.post(f"/admin/users/{target.id}/toggle-active"); assert not db.session.get(type(target),target.id).is_active; assert client.post(f"/admin/users/{admin.id}/toggle-active").status_code==400

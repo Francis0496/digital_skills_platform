@@ -43,23 +43,23 @@ DASHBOARD_CONTENT = {
     "mentor": {
         "eyebrow": "Mentor workspace",
         "title": "Support emerging digital talent",
-        "description": "Mentorship requests and active mentee information will appear here when the mentorship module is available.",
+        "description": "Review mentorship requests, support active mentees, and maintain your professional profile.",
         "next_title": "Complete your mentor profile",
         "next_text": "Add your professional title, expertise, experience, and availability.",
     },
     "client": {
         "eyebrow": "Client workspace",
         "title": "Connect with skilled freelancers",
-        "description": "Your opportunities and applicant activity will appear here when the marketplace modules are released.",
+        "description": "Manage opportunities, review applicants, and monitor marketplace activity.",
         "next_title": "Complete your client profile",
-        "next_text": "Add your contact, location, and organisation background to prepare for Increment 6.",
+        "next_text": "Keep your contact, location, and organisation background current.",
     },
     "administrator": {
         "eyebrow": "Administration workspace",
         "title": "Manage the platform",
-        "description": "Platform statistics and management tools will appear here when the administration module is released.",
-        "next_title": "Authentication is ready",
-        "next_text": "Administrative management tools remain scheduled for Increment 9.",
+        "description": "Monitor platform activity, manage users, oversee learning content, and review platform operations.",
+        "next_title": "Platform operations",
+        "next_text": "Use the Administrator workspace to access implemented management tools.",
     },
 }
 
@@ -67,6 +67,8 @@ DASHBOARD_CONTENT = {
 @bp.get("/dashboard")
 @login_required
 def dashboard():
+    if current_user.role_name == "administrator":
+        return redirect(url_for("admin.dashboard"))
     context = {"dashboard": DASHBOARD_CONTENT[current_user.role_name]}
     if current_user.role_name == "freelancer":
         enrollments = sorted(

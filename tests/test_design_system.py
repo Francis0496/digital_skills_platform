@@ -59,6 +59,14 @@ def test_design_02_dashboard_requires_authentication(client):
     assert "/auth/login" in response.headers["Location"]
 
 
+def test_design_02b_authenticated_header_stays_compact(client, user_factory):
+    user_factory(role_name="administrator")
+    response = login(client)
+    assert b"topbar-logout" in response.data
+    assert b"Open dashboard navigation" in response.data
+    assert b">Dashboard</a>" not in response.data
+
+
 @pytest.mark.parametrize(
     ("role_name", "visible_label", "hidden_label"),
     (

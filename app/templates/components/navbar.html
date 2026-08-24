@@ -6,17 +6,17 @@
 
         {% if current_user.is_authenticated %}
             <div class="flex items-center gap-2 sm:gap-3">
-                <a class="nav-link hidden sm:inline-flex" href="{{ url_for('users.dashboard') }}">Dashboard</a>
                 <a class="notification-link" href="{{ url_for('notifications.index') }}" aria-label="Notifications{% if unread %}, {{ unread }} unread{% endif %}">
                     <svg class="h-5 w-5" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 17H9m9-2V11a6 6 0 1 0-12 0v4l-2 2h16l-2-2Zm-8 5h4"/>
                     </svg>
                     {% if unread %}<span class="notification-count">{{ unread }}</span>{% endif %}
                 </a>
+                <span class="topbar-user-name">{{ current_user.full_name }}</span>
                 <span class="avatar" aria-label="Signed in as {{ current_user.full_name }}">{{ current_user.full_name[:1] | upper }}</span>
-                <form method="post" action="{{ url_for('auth.logout') }}">
+                <form class="topbar-logout" method="post" action="{{ url_for('auth.logout') }}">
                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                    <button class="btn-secondary px-3 sm:px-4" type="submit">Log out</button>
+                    <button class="btn-secondary px-3 sm:px-4" type="submit">Logout</button>
                 </form>
             </div>
         {% else %}
