@@ -127,3 +127,5 @@ def test_design_05_reusable_component_styles_are_served(client):
         b"grid-template-columns: clamp(2.5rem",
     ):
         assert responsive_rule in response.data
+    assert b".lesson-content-scroll" in response.data
+    assert b"overscroll-behavior-y: auto" in response.data

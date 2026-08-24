@@ -8,7 +8,7 @@ All significant project changes should be recorded by increment.
 
 - Added a dedicated keyboard-accessible scroll region for long lesson content.
 - Kept the lesson title, course navigation, video action, completion control, and previous/next navigation outside the scrolling pane.
-- Added responsive wrapping and overscroll containment so lesson reading does not move or overflow surrounding dashboard areas.
+- Added responsive wrapping and natural scroll chaining so continued scrolling at the lesson boundary moves the surrounding page.
 
 ### Mentorship Workspace
 
