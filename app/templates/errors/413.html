@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Upload Too Large | Digital Skills Platform{% endblock %}
+{% block content %}
+<section class="mx-auto max-w-2xl px-4 py-24 text-center">
+    <p class="text-sm font-bold text-indigo-700">413</p>
+    <h1 class="mt-2 text-4xl font-bold">Upload too large</h1>
+    <p class="mt-4 text-slate-600">Profile images must be no larger than 3 MB.</p>
+    <a class="btn-primary mt-8" href="{{ url_for('users.edit_profile') if current_user.is_authenticated else url_for('main.index') }}">Go back</a>
+</section>
+{% endblock %}

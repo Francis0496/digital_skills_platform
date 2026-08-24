@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}404 Not Found | Digital Skills Platform{% endblock %}
+{% block content %}
+<section class="mx-auto max-w-2xl px-4 py-24 text-center">
+    <p class="text-sm font-bold text-indigo-700">404</p>
+    <h1 class="mt-2 text-4xl font-bold">Page not found</h1>
+    <p class="mt-4 text-slate-600">The page you requested does not exist or may have moved.</p>
+    <a class="btn-primary mt-8" href="{{ url_for('main.index') }}">Return home</a>
+</section>
+{% endblock %}

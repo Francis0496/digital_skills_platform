@@ -1,0 +1,94 @@
+{% if portfolio %}
+<header class="rounded-xl bg-indigo-950 p-8 text-white">
+  <p class="text-sm font-bold uppercase tracking-wider text-teal-300">
+    Professional portfolio
+  </p>
+  <h1 class="mt-2 text-3xl font-bold">{{ portfolio.user.full_name }}</h1>
+  <p class="mt-2 text-xl text-indigo-100">
+    {{ portfolio.title or 'Digital professional' }}
+  </p>
+  <p class="mt-5 max-w-3xl whitespace-pre-line text-indigo-100">
+    {{ portfolio.description or 'Portfolio introduction not added yet.' }}
+  </p>
+  {% if owner %}
+  <div class="mt-6 flex gap-3">
+    <a class="btn-on-dark btn-primary" href="{{ url_for('portfolio.edit') }}"
+      >Edit portfolio</a
+    ><a class="btn-secondary" href="{{ url_for('portfolio.create_project') }}"
+      >Add project</a
+    >
+  </div>
+  {% endif %}
+</header>
+<section class="mt-8">
+  <h2 class="text-2xl font-bold">Projects</h2>
+  {% if portfolio.projects %}
+  <div class="mt-5 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    {% for project in portfolio.projects %}
+    <article class="card overflow-hidden p-0">
+      {% if project.project_image %}<img
+        class="h-48 w-full object-cover"
+        src="{{ url_for('portfolio.project_image', filename=project.project_image) }}"
+        alt="Project image for {{ project.title }}"
+      />{% endif %}
+      <div class="p-6">
+        <h3 class="text-xl font-bold">{{ project.title }}</h3>
+        <p class="mt-3 whitespace-pre-line text-sm text-slate-600">
+          {{ project.description }}
+        </p>
+        {% if project.completion_date %}
+        <p class="mt-3 text-xs text-slate-500">
+          Completed {{ project.completion_date.strftime('%d %B %Y') }}
+        </p>
+        {% endif %}{% if project.project_url %}<a
+          class="mt-4 inline-block font-bold text-indigo-700"
+          href="{{ project.project_url }}"
+          target="_blank"
+          rel="noopener noreferrer"
+          >View project</a
+        >{% endif %}{% if owner %}
+        <div class="mt-5 flex gap-2">
+          <a
+            class="btn-secondary"
+            href="{{ url_for('portfolio.edit_project', project_id=project.id) }}"
+            >Edit</a
+          >
+          <form
+            method="post"
+            action="{{ url_for('portfolio.delete_project', project_id=project.id) }}"
+            data-confirm="Delete this project?"
+          >
+            {{ confirm_form.hidden_tag() }}<button
+              class="btn-danger"
+              type="submit"
+            >
+              Delete
+            </button>
+          </form>
+        </div>
+        {% endif %}
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty-state mt-5">
+    <h3 class="font-bold">No projects yet</h3>
+    <p class="mt-2 text-sm text-slate-600">
+      {% if owner %}Add your first project to demonstrate your work.{% else
+      %}This freelancer has not added projects yet.{% endif %}
+    </p>
+  </div>
+  {% endif %}
+</section>
+{% else %}
+<div class="empty-state">
+  <h1 class="text-2xl font-bold">Create your portfolio</h1>
+  <p class="mt-2 text-slate-600">
+    Add a professional headline and introduction before showcasing projects.
+  </p>
+  <a class="btn-primary mt-5" href="{{ url_for('portfolio.edit') }}"
+    >Create portfolio</a
+  >
+</div>
+{% endif %}

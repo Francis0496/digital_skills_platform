@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Register | Digital Skills Platform{% endblock %}
+{% block content %}
+<section class="mx-auto max-w-lg px-4 py-14 sm:px-6">
+    <h1 class="text-3xl font-bold">Create your account</h1>
+    <p class="mt-2 text-slate-600">Join as a freelancer, mentor, or client.</p>
+    <form class="mt-8 space-y-5 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        {% with field=form.full_name %}{% include "auth/_field.html" %}{% endwith %}
+        {% with field=form.email %}{% include "auth/_field.html" %}{% endwith %}
+        {% with field=form.role %}{% include "auth/_field.html" %}{% endwith %}
+        {% with field=form.password %}{% include "auth/_field.html" %}{% endwith %}
+        {% with field=form.password_confirm %}{% include "auth/_field.html" %}{% endwith %}
+        {{ form.submit(class="btn-primary w-full") }}
+    </form>
+    <p class="mt-5 text-center text-sm text-slate-600">Already registered? <a class="font-semibold text-indigo-700" href="{{ url_for('auth.login') }}">Log in</a>.</p>
+</section>
+{% endblock %}

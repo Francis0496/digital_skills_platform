@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Log in | Digital Skills Platform{% endblock %}
+{% block content %}
+<section class="mx-auto max-w-lg px-4 py-14 sm:px-6">
+    <h1 class="text-3xl font-bold">Welcome back</h1>
+    <p class="mt-2 text-slate-600">Log in to continue to the platform.</p>
+    <form class="mt-8 space-y-5 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        {% with field=form.email %}{% include "auth/_field.html" %}{% endwith %}
+        {% with field=form.password %}{% include "auth/_field.html" %}{% endwith %}
+        <label class="flex items-center gap-2 text-sm text-slate-700">{{ form.remember_me(class="rounded border-slate-300") }} {{ form.remember_me.label.text }}</label>
+        {{ form.submit(class="btn-primary w-full") }}
+    </form>
+    <p class="mt-5 text-center text-sm text-slate-600">Need an account? <a class="font-semibold text-indigo-700" href="{{ url_for('auth.register') }}">Register</a>.</p>
+</section>
+{% endblock %}

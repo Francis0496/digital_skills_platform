@@ -1,0 +1,3 @@
+{% extends "layouts/dashboard.html" %}
+{% block title %}{{ page_title }} | Digital Skills Platform{% endblock %}
+{% block dashboard_content %}<div class="max-w-2xl"><h1 class="text-3xl font-bold">{{ page_title }}</h1><form class="card mt-8 space-y-5" method="post" novalidate>{{ form.hidden_tag() }}{% with field=form.name %}{% include "auth/_field.html" %}{% endwith %}{% with field=form.description %}{% include "auth/_field.html" %}{% endwith %}<div class="flex justify-end gap-3"><a class="btn-secondary" href="{{ url_for('admin.learning') }}">Cancel</a>{{ form.submit(class="btn-primary") }}</div></form></div>{% endblock %}

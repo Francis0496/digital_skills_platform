@@ -1,0 +1,51 @@
+{% extends "layouts/dashboard.html" %}
+{% block title %}My Skills | Digital Skills Platform{% endblock %}
+
+{% block dashboard_content %}
+<header>
+    <p class="text-sm font-bold uppercase tracking-wider text-teal-700">Freelancer profile</p>
+    <h1 class="mt-2 text-3xl font-bold">My digital skills</h1>
+    <p class="mt-2 text-slate-600">Show clients and mentors what you can do and your current proficiency.</p>
+</header>
+
+<div class="mt-8 grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem]">
+    <section class="card" aria-labelledby="existing-skills">
+        <h2 id="existing-skills" class="text-xl font-bold">Your skills</h2>
+        {% if user_skills %}
+            <ul class="mt-5 divide-y divide-slate-200">
+                {% for user_skill in user_skills %}
+                    <li class="flex flex-col gap-3 py-4 sm:flex-row sm:items-center sm:justify-between">
+                        <div>
+                            <p class="font-bold">{{ user_skill.skill.name }}</p>
+                            <span class="badge badge-info mt-1">{{ user_skill.proficiency_level }}</span>
+                        </div>
+                        <form method="post" action="{{ url_for('users.remove_skill', user_skill_id=user_skill.id) }}" data-confirm="Remove this skill from your profile?">
+                            {{ remove_form.hidden_tag() }}
+                            <button class="btn-danger" type="submit">Remove</button>
+                        </form>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <div class="empty-state mt-5">
+                <h3 class="font-bold">No skills added</h3>
+                <p class="mt-2 text-sm text-slate-600">Choose an available skill to start building your professional profile.</p>
+            </div>
+        {% endif %}
+    </section>
+
+    <aside class="card self-start" aria-labelledby="add-skill">
+        <h2 id="add-skill" class="text-xl font-bold">Add a skill</h2>
+        {% if form.skill_id.choices %}
+            <form class="mt-5 space-y-5" method="post" novalidate>
+                {{ form.hidden_tag() }}
+                {% with field=form.skill_id %}{% include "auth/_field.html" %}{% endwith %}
+                {% with field=form.proficiency_level %}{% include "auth/_field.html" %}{% endwith %}
+                {{ form.submit(class="btn-primary w-full") }}
+            </form>
+        {% else %}
+            <p class="mt-3 text-sm leading-6 text-slate-600">No approved skills are available yet. An administrator will add skills in a later increment.</p>
+        {% endif %}
+    </aside>
+</div>
+{% endblock %}

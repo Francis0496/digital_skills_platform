@@ -1,0 +1,72 @@
+{% extends "layouts/dashboard.html" %}
+{% block title %}My Profile | Digital Skills Platform{% endblock %}
+
+{% block dashboard_content %}
+<div class="flex flex-col justify-between gap-4 sm:flex-row sm:items-start">
+    <div>
+        <p class="text-sm font-bold uppercase tracking-wider text-teal-700">{{ current_user.role_name | title }} profile</p>
+        <h1 class="mt-2 text-3xl font-bold">My profile</h1>
+        <p class="mt-2 text-slate-600">Keep your professional information accurate and useful.</p>
+    </div>
+    <a class="btn-primary" href="{{ url_for('users.edit_profile') }}">Edit profile</a>
+</div>
+
+<div class="mt-8 grid gap-6 lg:grid-cols-[18rem_1fr]">
+    <aside class="card text-center">
+        {% if current_user.profile_image %}
+            <img class="mx-auto h-32 w-32 rounded-full object-cover" src="{{ url_for('users.profile_image', filename=current_user.profile_image) }}" alt="Profile image for {{ current_user.full_name }}">
+        {% else %}
+            <div class="mx-auto grid h-32 w-32 place-items-center rounded-full bg-indigo-100 text-4xl font-bold text-indigo-800" aria-label="No profile image">{{ current_user.full_name[:1] | upper }}</div>
+        {% endif %}
+        <h2 class="mt-5 text-xl font-bold">{{ current_user.full_name }}</h2>
+        <span class="badge badge-info mt-2">{{ current_user.role_name | title }}</span>
+        <dl class="mt-6 space-y-3 text-left text-sm">
+            <div><dt class="font-bold text-slate-500">Email</dt><dd class="mt-1 break-all">{{ current_user.email }}</dd></div>
+            <div><dt class="font-bold text-slate-500">Phone</dt><dd class="mt-1">{{ current_user.phone or 'Not provided' }}</dd></div>
+            <div><dt class="font-bold text-slate-500">Location</dt><dd class="mt-1">{{ current_user.location or 'Not provided' }}</dd></div>
+        </dl>
+    </aside>
+
+    <div class="space-y-6">
+        <section class="card" aria-labelledby="about-heading">
+            <h2 id="about-heading" class="text-xl font-bold">About</h2>
+            <p class="mt-3 whitespace-pre-line text-sm leading-6 text-slate-600">{{ current_user.bio or 'Add a short biography to introduce your experience and goals.' }}</p>
+        </section>
+
+        {% if current_user.role_name == 'freelancer' %}
+            <section class="card" aria-labelledby="skills-heading">
+                <div class="flex items-center justify-between gap-4">
+                    <h2 id="skills-heading" class="text-xl font-bold">Digital skills</h2>
+                    <a class="btn-secondary" href="{{ url_for('users.skills') }}">Manage skills</a>
+                </div>
+                {% if current_user.skills %}
+                    <div class="mt-4 flex flex-wrap gap-2">
+                        {% for user_skill in current_user.skills %}
+                            <span class="badge badge-info">{{ user_skill.skill.name }} · {{ user_skill.proficiency_level }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="mt-3 text-sm text-slate-600">No skills added yet.</p>
+                {% endif %}
+            </section>
+        {% elif current_user.role_name == 'mentor' %}
+            <section class="card" aria-labelledby="mentor-heading">
+                <div class="flex items-center justify-between gap-4">
+                    <h2 id="mentor-heading" class="text-xl font-bold">Mentor details</h2>
+                    <a class="btn-secondary" href="{{ url_for('users.edit_mentor_profile') }}">Edit mentor profile</a>
+                </div>
+                {% if current_user.mentor_profile %}
+                    <dl class="mt-5 grid gap-5 sm:grid-cols-2">
+                        <div><dt class="font-bold text-slate-500">Professional title</dt><dd class="mt-1">{{ current_user.mentor_profile.professional_title or 'Not provided' }}</dd></div>
+                        <div><dt class="font-bold text-slate-500">Availability</dt><dd class="mt-1 whitespace-pre-line">{{ current_user.mentor_profile.availability or 'Not provided' }}</dd></div>
+                        <div><dt class="font-bold text-slate-500">Expertise</dt><dd class="mt-1 whitespace-pre-line">{{ current_user.mentor_profile.expertise or 'Not provided' }}</dd></div>
+                        <div><dt class="font-bold text-slate-500">Experience</dt><dd class="mt-1 whitespace-pre-line">{{ current_user.mentor_profile.experience or 'Not provided' }}</dd></div>
+                    </dl>
+                {% else %}
+                    <p class="mt-3 text-sm text-slate-600">Add your expertise, experience, and availability so learners can understand how you can help.</p>
+                {% endif %}
+            </section>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

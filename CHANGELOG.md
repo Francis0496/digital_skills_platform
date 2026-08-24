@@ -1,0 +1,194 @@
+# CHANGELOG.md
+
+All significant project changes should be recorded by increment.
+
+## Unreleased
+
+### Increment 10: Hardening and Deployment
+Status: Completed
+
+Added:
+- Explicit production configuration with strong-secret validation and secure cookies.
+- CSP, HSTS, clickjacking, MIME-sniffing, referrer, and permissions response headers.
+- Database-aware `/health` readiness endpoint and Waitress WSGI deployment entrypoint.
+- Reproducible, minified local Tailwind build with pinned Node dependencies.
+- CSP-safe confirmation handlers, accessible user search labelling, and deployment guidance.
+
+Testing:
+- Production startup, cookies, headers, health, local assets, and inline-handler regression tests pass.
+- Full suite: 129 passed; Python dependency check and npm vulnerability audit pass.
+
+### Increment 9: Administration and Notifications
+Status: Completed
+
+Added:
+- Database-backed notifications with unread badges and recipient-scoped read controls.
+- Notifications for enrolment, applications, application status, and mentorship events.
+- Administrator statistics dashboard, user search/activation, and skill management.
+- Consolidated opportunity, application, learning, and mentorship oversight.
+- Responsive management views, notification migration, and privacy/authorization tests.
+
+Testing:
+- Recipient privacy, read state, event delivery, administrator access, user state, skills, statistics, and oversight tests pass.
+
+### Increment 8: Mentorship
+Status: Completed
+
+Added:
+- Public active-mentor directory and professional mentor details.
+- Freelancer mentorship requests with duplicate pending/active prevention.
+- Recipient-only mentor acceptance and rejection.
+- Active mentorship relationship records, learner tracking, and mentor mentee views.
+- Responsive request, directory, profile, and mentee interfaces.
+- Mentorship migration and lifecycle/privacy tests.
+
+Testing:
+- Directory visibility, role access, duplicates, recipient ownership, response lifecycle, and mentee privacy tests pass.
+
+### Increment 7: Applications
+Status: Completed
+
+Added:
+- JobApplication model with one application per freelancer and opportunity.
+- Freelancer application submission and status tracking.
+- Closed/expired opportunity and duplicate-application protection.
+- Owned client applicant review with profile, skills, and portfolio context.
+- Pending, Under Review, Accepted, and Rejected status controls.
+- Administrator application oversight, responsive views, migration, and access tests.
+
+Testing:
+- Submission, lifecycle, duplicate, role, privacy, ownership, status-tampering, and oversight tests pass.
+
+### Increment 6: Freelance Marketplace
+Status: Completed
+
+Added:
+- Client-owned freelance opportunities with active, closed, and expired lifecycle states.
+- Client and administrator create/edit controls with ownership enforcement.
+- Public active-opportunity catalogue, keyword search, category filtering, and details.
+- Client My Opportunities and administrator oversight interfaces.
+- POST-only closing, deadline/budget validation, responsive marketplace views, migration, and security tests.
+
+Testing:
+- Role, ownership, lifecycle, visibility, filtering, validation, and direct-route tests pass.
+
+### Increment 5: Portfolio
+Status: Completed
+
+Added:
+- One-to-one freelancer portfolios and owned portfolio projects.
+- Portfolio introduction and project create, edit, and delete workflows.
+- Public read-only portfolio showcases with owner-only controls.
+- Safe randomized WebP project-image processing and replacement cleanup.
+- Responsive project cards, empty states, validation, and ownership tests.
+- Portfolio schema migration.
+
+Testing:
+- Portfolio uniqueness, role authorization, ownership, image validation, public visibility, and CRUD tests pass.
+
+### Increment 4: Digital Learning
+Status: Completed
+
+Added:
+- CourseCategory, Course, Lesson, Enrollment, and LessonProgress models.
+- Administrator category, course, publishing, and ordered-lesson management.
+- Published public course catalogue with category and difficulty filters.
+- Course details and lesson overview.
+- Freelancer enrolment with duplicate prevention.
+- My Courses, protected learning screen, lesson navigation, and completion tracking.
+- Calculated textual and visual progress with completion status.
+- Digital-learning migration and authorization/regression tests.
+
+Changed:
+- Public and freelancer navigation now links to live learning workflows.
+- Home-page learning actions now open the real course catalogue.
+- Requirements traceability now records tested implementations for FR06-FR10.
+
+Testing:
+- Publishing visibility, administrator access, enrolment, lesson ownership, constraints, and progress tests pass.
+
+### Increment 3: Profiles and Skills
+Status: Completed
+
+Added:
+- Skill, UserSkill, and MentorProfile models with approved relationships and uniqueness constraints.
+- Own-profile view and edit workflows for all authenticated roles.
+- Safe profile-image validation, resizing, randomized naming, WebP re-encoding, private storage, and replacement cleanup.
+- Freelancer skill management with Beginner, Intermediate, and Advanced proficiency levels.
+- Mentor professional-title, expertise, experience, and availability editing.
+- Responsive profile, skills, and mentor-profile interfaces.
+- Increment 3 schema migration and comprehensive profile/skill tests.
+
+Changed:
+- Role navigation now links to the profile features available in Increment 3.
+- Dashboard next steps now point users to live profile workflows.
+- Requirements traceability now records tested implementations for FR04 and FR05.
+
+Testing:
+- Profile validation, image security, ownership, database constraints, skill access, and mentor access tests pass.
+
+### Increment 2: Authentication and Role-Based Access Control
+Status: Completed
+
+Added:
+- Role and User models with approved fields, relationships, and uniqueness rules.
+- Werkzeug password hashing and Flask-Login user loading.
+- Public registration, login, and POST-only logout flows.
+- Inactive-account enforcement and safe post-login redirects.
+- Reusable server-side role authorization decorator.
+- Responsive authentication forms and templates.
+- Initial Role/User migration and idempotent `seed-roles` command.
+- Authentication and RBAC regression tests.
+- Responsive public navigation, authenticated layout, and role dashboard shells.
+- Reusable design-system styles for buttons, forms, alerts, cards, badges, sidebars, and empty states.
+
+Changed:
+- Navigation now reflects anonymous and authenticated session state.
+- Foundation and authentication pages now use the approved indigo, teal, and semantic colour system.
+- Unimplemented role navigation is presented as disabled text instead of fake links.
+- Requirements traceability and setup documentation now cover FR01-FR03.
+
+Testing:
+- Foundation, model, authentication, account-state, redirect, RBAC, and role-layout tests pass.
+
+### Increment 1: Project Foundation
+Status: Completed
+
+Added:
+- Flask application factory and environment-based configuration.
+- SQLAlchemy, Flask-Migrate, Flask-Login, and CSRF extension setup.
+- Blueprint skeletons for all planned application areas.
+- Responsive Tailwind-based home page and shared Jinja layout.
+- Custom 403, 404, and 500 error pages.
+- Isolated pytest configuration and foundation smoke tests.
+- Environment, ignore, dependency, and static asset files.
+
+Changed:
+- Expanded README with verified setup, run, test, migration, and styling guidance.
+
+Testing:
+- Foundation test suite and application/migration smoke checks completed.
+
+Notes:
+- Business models and functionality remain deferred to later increments.
+- Tailwind uses the browser CDN for this foundation and should be compiled for production.
+
+## Format for Future Entries
+
+### Increment N: Name
+Status: Completed / In Progress
+
+Added:
+- ...
+
+Changed:
+- ...
+
+Fixed:
+- ...
+
+Testing:
+- ...
+
+Notes:
+- ...

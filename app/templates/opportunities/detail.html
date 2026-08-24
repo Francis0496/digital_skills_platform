@@ -1,0 +1,84 @@
+{% extends "base.html" %}{% block title %}{{ opportunity.title }} |
+Opportunities{% endblock %}{% block content %}
+<section class="mx-auto max-w-7xl px-4 py-12 sm:px-6">
+  <a
+    class="font-bold text-indigo-700"
+    href="{{ url_for('opportunities.catalogue') }}"
+    >&larr; Opportunities</a
+  >
+  <div class="mt-6 grid gap-8 lg:grid-cols-[minmax(0,1fr)_20rem]">
+    <article>
+      <div class="flex gap-2">
+        {% if opportunity.category %}<span class="badge badge-info"
+          >{{ opportunity.category }}</span
+        >{% endif %}<span
+          class="badge {{ 'badge-success' if opportunity.effective_status == 'active' else 'bg-slate-100 text-slate-700' }}"
+          >{{ opportunity.effective_status|title }}</span
+        >
+      </div>
+      <h1 class="mt-4 text-4xl font-bold">{{ opportunity.title }}</h1>
+      <p class="mt-2 text-slate-600">
+        Posted by {{ opportunity.client.full_name }}
+      </p>
+      <div class="mt-8 whitespace-pre-line leading-7 text-slate-700">
+        {{ opportunity.description }}
+      </div>
+    </article>
+    <aside class="card self-start">
+      <h2 class="font-bold">Opportunity details</h2>
+      <dl class="mt-5 space-y-4 text-sm">
+        <div>
+          <dt class="font-bold text-slate-500">Budget</dt>
+          <dd>
+            {{ '%.2f'|format(opportunity.budget) if opportunity.budget is not
+            none else 'Not specified' }}
+          </dd>
+        </div>
+        <div>
+          <dt class="font-bold text-slate-500">Deadline</dt>
+          <dd>
+            {{ opportunity.deadline.strftime('%d %B %Y') if opportunity.deadline
+            else 'Open deadline' }}
+          </dd>
+        </div>
+        <div>
+          <dt class="font-bold text-slate-500">Status</dt>
+          <dd>{{ opportunity.effective_status|title }}</dd>
+        </div>
+      </dl>
+      {% if current_user.is_authenticated and (current_user.role_name ==
+      'administrator' or current_user.id == opportunity.client_id) %}<a
+        class="btn-secondary mt-5 w-full"
+        href="{{ url_for('opportunities.edit', opportunity_id=opportunity.id) }}"
+        >Edit opportunity</a
+      ><a
+        class="btn-secondary mt-3 w-full"
+        href="{{ url_for('applications.for_opportunity', opportunity_id=opportunity.id) }}"
+        >View applications ({{ opportunity.applications|length }})</a
+      >{% if opportunity.status == 'active' %}
+      <form
+        class="mt-3"
+        method="post"
+        action="{{ url_for('opportunities.close', opportunity_id=opportunity.id) }}"
+        data-confirm="Close this opportunity?"
+      >
+        {{ action_form.hidden_tag() }}<button class="btn-danger w-full">
+          Close opportunity
+        </button>
+      </form>
+      {% endif %}{% elif current_user.is_authenticated and
+      current_user.role_name == 'freelancer' and
+      opportunity.accepts_applications %}<a
+        class="btn-primary mt-5 w-full"
+        href="{{ url_for('applications.apply', opportunity_id=opportunity.id) }}"
+        >Apply now</a
+      >{% elif not current_user.is_authenticated and
+      opportunity.accepts_applications %}<a
+        class="btn-primary mt-5 w-full"
+        href="{{ url_for('auth.login', next=url_for('applications.apply', opportunity_id=opportunity.id)) }}"
+        >Log in to apply</a
+      >{% endif %}
+    </aside>
+  </div>
+</section>
+{% endblock %}

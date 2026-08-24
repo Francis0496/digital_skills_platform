@@ -1,0 +1,9 @@
+<div>
+    {{ field.label(class="form-label") }}
+    {{ field(class="form-input") }}
+    {% if field.errors %}
+        <ul class="form-error">
+            {% for error in field.errors %}<li>{{ error }}</li>{% endfor %}
+        </ul>
+    {% endif %}
+</div>

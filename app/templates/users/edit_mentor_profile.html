@@ -1,0 +1,21 @@
+{% extends "layouts/dashboard.html" %}
+{% block title %}Edit Mentor Profile | Digital Skills Platform{% endblock %}
+
+{% block dashboard_content %}
+<div class="max-w-3xl">
+    <p class="text-sm font-bold uppercase tracking-wider text-teal-700">Mentor details</p>
+    <h1 class="mt-2 text-3xl font-bold">Edit mentor profile</h1>
+    <p class="mt-2 text-slate-600">Explain your professional background and how you can support learners.</p>
+    <form class="card mt-8 space-y-5" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        {% with field=form.professional_title %}{% include "auth/_field.html" %}{% endwith %}
+        {% with field=form.expertise %}{% include "auth/_field.html" %}{% endwith %}
+        {% with field=form.experience %}{% include "auth/_field.html" %}{% endwith %}
+        {% with field=form.availability %}{% include "auth/_field.html" %}{% endwith %}
+        <div class="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+            <a class="btn-secondary" href="{{ url_for('users.profile') }}">Cancel</a>
+            {{ form.submit(class="btn-primary") }}
+        </div>
+    </form>
+</div>
+{% endblock %}

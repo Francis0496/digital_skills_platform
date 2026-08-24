@@ -1,0 +1,4 @@
+{% extends "layouts/dashboard.html" if owner else "base.html" %}
+{% block title %}Portfolio | Digital Skills Platform{% endblock %}
+{% block dashboard_content %}{% include "portfolio/_content.html" %}{% endblock %}
+{% block content %}{% if owner %}{{ super() }}{% else %}<div class="mx-auto max-w-6xl px-4 py-12 sm:px-6">{% include "portfolio/_content.html" %}</div>{% endif %}{% endblock %}

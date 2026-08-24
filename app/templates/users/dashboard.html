@@ -1,0 +1,31 @@
+{% extends "layouts/dashboard.html" %}
+
+{% block title %}Dashboard | Digital Skills Platform{% endblock %}
+
+{% block dashboard_content %}
+<header>
+    <p class="text-sm font-bold uppercase tracking-wider text-teal-700">{{ dashboard.eyebrow }}</p>
+    <h1 class="mt-2 text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">Welcome back, {{ current_user.full_name }}</h1>
+    <p class="mt-3 max-w-3xl text-slate-600">{{ dashboard.description }}</p>
+</header>
+
+<div class="mt-8 grid gap-6 md:grid-cols-2">
+    <section class="card" aria-labelledby="workspace-status">
+        <span class="badge badge-success">Account ready</span>
+        <h2 id="workspace-status" class="mt-4 text-xl font-bold">{{ dashboard.title }}</h2>
+        <p class="mt-2 text-sm leading-6 text-slate-600">Your secure {{ current_user.role_name }} account and role-specific workspace are active.</p>
+    </section>
+
+    <section class="card" aria-labelledby="next-step">
+        <span class="badge badge-info">Next increment</span>
+        <h2 id="next-step" class="mt-4 text-xl font-bold">{{ dashboard.next_title }}</h2>
+        <p class="mt-2 text-sm leading-6 text-slate-600">{{ dashboard.next_text }}</p>
+    </section>
+</div>
+
+<section class="empty-state mt-6" aria-labelledby="activity-heading">
+    <div class="mx-auto grid h-12 w-12 place-items-center rounded-full bg-slate-100 text-slate-500" aria-hidden="true">&#9638;</div>
+    <h2 id="activity-heading" class="mt-4 text-lg font-bold">No activity to show yet</h2>
+    <p class="mx-auto mt-2 max-w-lg text-sm leading-6 text-slate-600">Activity will appear here as the approved learning, portfolio, marketplace, and mentorship modules are implemented.</p>
+</section>
+{% endblock %}
