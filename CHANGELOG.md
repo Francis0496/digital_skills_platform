@@ -4,6 +4,13 @@ All significant project changes should be recorded by increment.
 
 ## Unreleased
 
+### Secure Cross-Platform Profile Avatars
+
+- Added a reusable avatar component that displays uploaded profile photos with an initials fallback.
+- Added user-ID avatar URLs so stored upload filenames are not exposed in rendered pages.
+- Made active mentor photos visible in the public mentor directory while limiting other account photos to authenticated platform users.
+- Added mentor and learner photos to mentor discovery, mentor profiles, mentorship requests, active mentorships, and mentee cards.
+
 ### Premium Learning Category Collection
 
 - Rebuilt administrator learning categories as a polished responsive card collection with clearer visual hierarchy and pathway descriptions.

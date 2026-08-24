@@ -119,13 +119,33 @@ def test_profile_06_disallowed_image_extension_is_rejected(client, user_factory)
     assert b"Upload a JPG, PNG, or WebP image" in response.data
 
 
-def test_profile_07_user_cannot_fetch_another_users_image(client, user_factory):
+def test_profile_07_authenticated_user_can_fetch_another_users_avatar(
+    client, user_factory, app
+):
     user_factory()
     other = user_factory(email="other@example.com", role_name="client")
     other.profile_image = "other.webp"
     db.session.commit()
+    Path(app.config["PROFILE_UPLOAD_FOLDER"], other.profile_image).write_bytes(b"avatar")
     login(client)
-    assert client.get("/users/profile-image/other.webp").status_code == 404
+    response = client.get(f"/users/avatar/{other.id}")
+    assert response.status_code == 200
+    assert response.data == b"avatar"
+
+
+def test_profile_07b_anonymous_avatar_access_is_limited_to_mentors(
+    client, user_factory, app
+):
+    mentor = user_factory(email="mentor-avatar@example.com", role_name="mentor")
+    learner = user_factory(email="learner-avatar@example.com")
+    mentor.profile_image = "mentor.webp"
+    learner.profile_image = "learner.webp"
+    db.session.commit()
+    Path(app.config["PROFILE_UPLOAD_FOLDER"], mentor.profile_image).write_bytes(b"mentor")
+    Path(app.config["PROFILE_UPLOAD_FOLDER"], learner.profile_image).write_bytes(b"learner")
+
+    assert client.get(f"/users/avatar/{mentor.id}").status_code == 200
+    assert client.get(f"/users/avatar/{learner.id}").status_code == 404
 
 
 def test_profile_08_replacing_image_removes_previous_file(client, user_factory, app):

@@ -134,6 +134,7 @@ h1, h2, h3, h4, p, li, dd, dt, a { overflow-wrap: anywhere; }
 .learner-sidebar-heading strong { font-size: .875rem; }
 .learner-sidebar-heading div span { margin-top: .15rem; color: #94a3b8; font-size: .75rem; }
 .learner-sidebar-avatar { display: grid; width: 2.5rem; height: 2.5rem; flex: none; place-items: center; border-radius: 999px; background: #e0e7ff; color: #3730a3; font-weight: 800; }
+.user-avatar-image { display: block; object-fit: cover; object-position: center; }
 .learner-navigation { display: grid; gap: .2rem; padding-block: 1.25rem; }
 .learner-nav-link, .learner-sidebar-logout button { display: flex; min-height: 2.75rem; width: 100%; align-items: center; gap: .75rem; border-radius: .55rem; padding: .65rem .75rem; color: #cbd5e1; font-size: .875rem; font-weight: 650; text-align: left; }
 .learner-nav-link:hover, .learner-sidebar-logout button:hover { background: #1e293b; color: white; }

@@ -9,7 +9,9 @@ def mentor(user_factory):
     user=user_factory(email="mentor@example.com",role_name="mentor"); user.full_name="Primary Mentor"; db.session.add(MentorProfile(user=user,professional_title="Software Engineer",expertise="Web development")); db.session.commit(); return user
 
 def test_mentor_01_directory_and_profile_public(client,mentor):
-    response=client.get("/mentorship/mentors"); assert b"Software Engineer" in response.data; assert client.get(f"/mentorship/mentors/{mentor.id}").status_code==200
+    mentor.profile_image="mentor-photo.webp"; db.session.commit()
+    response=client.get("/mentorship/mentors"); assert b"Software Engineer" in response.data; assert f"/users/avatar/{mentor.id}".encode() in response.data
+    detail=client.get(f"/mentorship/mentors/{mentor.id}"); assert detail.status_code==200; assert b"Profile photo of Primary Mentor" in detail.data
 
 def test_mentor_02_inactive_mentor_hidden(client,mentor):
     mentor.is_active=False; db.session.commit(); assert b"Primary Mentor" not in client.get("/mentorship/mentors").data; assert client.get(f"/mentorship/mentors/{mentor.id}").status_code==404

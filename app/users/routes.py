@@ -253,6 +253,19 @@ def profile_image(filename):
     return send_from_directory(current_app.config["PROFILE_UPLOAD_FOLDER"], filename)
 
 
+@bp.get("/avatar/<int:user_id>")
+def avatar_image(user_id):
+    """Serve an account avatar without exposing its stored filename in page markup."""
+    user = db.session.get(User, user_id)
+    if user is None or not user.is_active or not user.profile_image:
+        abort(404)
+    if not current_user.is_authenticated and user.role_name != "mentor":
+        abort(404)
+    return send_from_directory(
+        current_app.config["PROFILE_UPLOAD_FOLDER"], user.profile_image
+    )
+
+
 @bp.route("/skills", methods=["GET", "POST"])
 @roles_required("freelancer")
 def skills():
