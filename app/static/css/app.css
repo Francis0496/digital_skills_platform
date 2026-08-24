@@ -293,6 +293,11 @@ h1, h2, h3, h4, p, li, dd, dt, a { overflow-wrap: anywhere; }
 .admin-record-list h3 { font-weight: 800; }
 .admin-record-list p { margin-top: .2rem; color: #64748b; font-size: .8rem; }
 .admin-record-list article > div:last-child { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; }
+.admin-record-content { min-width: 0; flex: 1 1 14rem; }
+.admin-record-actions { display: flex; width: 100%; flex: none; flex-wrap: wrap; align-items: center; gap: .5rem; }
+.admin-panel-action, .admin-learning-action { width: fit-content; flex: none; white-space: nowrap; }
+.admin-learning-action { min-width: 5.5rem; justify-content: center; }
+.admin-learning-grid .admin-learning-records > article { flex-direction: column; align-items: stretch; }
 .admin-record-list > article > .btn-primary, .admin-record-list > article > .btn-secondary, .admin-record-list > article > .btn-danger { width: fit-content; flex: none; align-self: flex-start; white-space: nowrap; }
 .admin-record-list > article > .admin-skill-edit { min-width: 5.5rem; padding-inline: 1.1rem; justify-content: center; }
 
@@ -385,7 +390,7 @@ h1, h2, h3, h4, p, li, dd, dt, a { overflow-wrap: anywhere; }
     .admin-dashboard-grid { grid-template-columns: minmax(0,1.45fr) minmax(17rem,.55fr); }
     .admin-recent-users > article { grid-template-columns: auto minmax(0,1fr) auto; }
     .admin-recent-users article > div:last-child { grid-column: auto; justify-content: flex-end; }
-    .admin-learning-grid { grid-template-columns: minmax(18rem,.75fr) minmax(0,1.25fr); }
+    .admin-learning-grid { grid-template-columns: minmax(0,1fr); }
     .admin-table { border: 1px solid #e2e8f0; border-radius: .75rem; overflow: hidden; background: white; box-shadow: 0 1px 3px rgb(15 23 42 / .04); }
     .admin-table thead { display: table-header-group; }
     .admin-table tbody { display: table-row-group; }
@@ -400,6 +405,10 @@ h1, h2, h3, h4, p, li, dd, dt, a { overflow-wrap: anywhere; }
 @media (min-width: 1280px) {
     .learner-stat-grid, .admin-stat-grid { grid-template-columns: repeat(4,minmax(0,1fr)); }
     .topbar-user-name { display: block; }
+    .admin-learning-grid { grid-template-columns: minmax(20rem,.72fr) minmax(0,1.28fr); }
+    .admin-learning-grid .admin-learning-records > article { flex-direction: row; align-items: center; }
+    .admin-learning-grid .admin-record-actions { width: auto; justify-content: flex-end; }
+    .admin-learning-action { min-width: 6rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {

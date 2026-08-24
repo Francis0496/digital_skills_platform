@@ -6,6 +6,8 @@ All significant project changes should be recorded by increment.
 
 ### Administrator Responsive Workspace Correction
 
+- Refined Learning Content so category/course panels remain stacked at compact desktop widths and use a balanced split only on wide screens.
+- Stabilized Category Edit and Course Manage actions with readable non-shrinking action groups.
 - Corrected skill-management record actions so Edit remains content-sized and readable without shrinking.
 - Corrected the wide-screen user-search row so its input flexes while Search and Clear remain readable, content-sized controls.
 - Routed Administrator dashboard access directly to the implemented operational overview.
