@@ -95,6 +95,7 @@ img, svg { max-width: 100%; }
 .badge { display: inline-flex; border-radius: 999px; padding: .25rem .625rem; font-size: .75rem; line-height: 1rem; font-weight: 750; }
 .badge-success { background: #d1fae5; color: #065f46; }
 .badge-info { background: #dbeafe; color: #1e40af; }
+.badge-danger { background: #fee2e2; color: #991b1b; }
 
 .alert { display: flex; align-items: flex-start; gap: .65rem; margin-bottom: .5rem; border: 1px solid; border-radius: .6rem; padding: .8rem 1rem; font-size: .875rem; line-height: 1.35rem; }
 .alert-success { border-color: #a7f3d0; background: #ecfdf5; color: #065f46; }
@@ -175,6 +176,32 @@ img, svg { max-width: 100%; }
 .lesson-navigation summary { cursor: pointer; color: #475569; font-size: .75rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
 .lesson-navigation h2 { margin-top: 1rem; font-weight: 800; }
 .lesson-navigation ol { display: grid; gap: .2rem; margin-top: 1rem; }
+.mentor-dashboard-list > article { display: grid; grid-template-columns: auto minmax(0,1fr) auto; align-items: start; gap: .75rem; border-bottom: 1px solid #e2e8f0; padding-block: 1rem; }
+.mentor-dashboard-list > article:last-child { border-bottom: 0; }
+.mentor-dashboard-list h3, .mentor-profile-summary h3 { color: #0f172a; font-weight: 800; }
+.mentor-dashboard-list p { margin-top: .2rem; color: #64748b; font-size: .8rem; line-height: 1.25rem; }
+.mentor-dashboard-list time { color: #94a3b8; font-size: .7rem; }
+.mentor-profile-summary { display: flex; flex-direction: column; align-items: flex-start; padding-top: 1.25rem; }
+.mentor-profile-summary .badge { margin-top: 1rem; }
+.mentor-profile-summary h3 { margin-top: .75rem; }
+.mentor-profile-summary p { margin-block: .45rem 1.25rem; color: #64748b; font-size: .875rem; line-height: 1.5rem; }
+.mentor-card-grid { display: grid; grid-template-columns: minmax(0,1fr); gap: 1rem; margin-top: 1.5rem; }
+.mentor-card-grid.compact { margin-top: 1rem; }
+.mentor-card { display: flex; flex-direction: column; align-items: flex-start; }
+.mentor-card-heading, .request-card-main, .request-card-heading { display: flex; width: 100%; align-items: center; gap: .75rem; }
+.mentor-card-heading, .request-card-main { justify-content: space-between; }
+.mentor-card h2 { margin-top: 1rem; font-size: 1.15rem; font-weight: 800; }
+.mentor-card > p { margin-top: .25rem; color: #64748b; font-size: .875rem; }
+.mentor-card .mentor-card-label { margin-top: 1.25rem; color: #475569; font-size: .75rem; font-weight: 800; text-transform: uppercase; }
+.mentor-card .mentor-start-date { margin-top: 1.25rem; color: #94a3b8; font-size: .75rem; }
+.request-card-list { display: grid; gap: 1rem; margin-top: 1.5rem; }
+.request-card-heading { min-width: 0; width: auto; }
+.request-card-heading h2 { font-size: 1rem; font-weight: 800; }
+.request-card-heading time { color: #64748b; font-size: .75rem; }
+.request-message { margin-top: 1rem; white-space: pre-line; color: #475569; font-size: .875rem; line-height: 1.5rem; }
+.request-actions { display: flex; flex-direction: column; align-items: stretch; gap: 1rem; margin-top: 1.25rem; border-top: 1px solid #e2e8f0; padding-top: 1.25rem; }
+.request-actions legend { margin-bottom: .55rem; color: #475569; font-size: .75rem; font-weight: 800; }
+.request-actions fieldset > label { display: inline-flex; min-height: 2.75rem; align-items: center; gap: .45rem; margin-right: 1rem; font-size: .875rem; }
 
 @media (min-width: 640px) {
     .public-container { padding-inline: 1.5rem; }
@@ -190,6 +217,8 @@ img, svg { max-width: 100%; }
     .dashboard-page-header { flex-direction: row; align-items: flex-start; justify-content: space-between; }
     .learner-stat-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
     .course-card-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+    .mentor-card-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+    .request-actions { flex-direction: row; align-items: end; justify-content: space-between; }
 }
 
 @media (min-width: 768px) {
@@ -222,6 +251,7 @@ img, svg { max-width: 100%; }
     .lesson-layout { grid-template-columns: 17rem minmax(0,1fr); }
     .lesson-navigation summary { cursor: default; list-style: none; }
     .lesson-navigation summary::-webkit-details-marker { display: none; }
+    .mentor-card-grid:not(.compact) { grid-template-columns: repeat(3,minmax(0,1fr)); }
 }
 
 @media (prefers-reduced-motion: reduce) {

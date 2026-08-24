@@ -4,6 +4,19 @@ All significant project changes should be recorded by increment.
 
 ## Unreleased
 
+### Batch 3: Mentor UI/UX Refinement
+Status: Completed
+
+Improved:
+- Added a mentor command-centre dashboard using live request, mentee, profile, and notification data.
+- Added responsive mentor navigation with active states, accessible mobile behavior, and secure logout.
+- Refined received-request review, status presentation, response controls, and empty states.
+- Improved active-mentee cards with learner location, skills, and relationship start dates.
+- Standardized mentor status badges, profile prompts, responsive cards, and page hierarchy.
+
+Scope:
+- No mentorship rules, models, migrations, authentication, authorization, ownership, or notification-generation logic changed.
+
 ### Batch 2: Freelancer/Learner UI/UX Refinement
 Status: Completed
 

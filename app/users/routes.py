@@ -131,6 +131,35 @@ def dashboard():
             if current_user.portfolio
             else 0,
         )
+    elif current_user.role_name == "mentor":
+        requests = db.session.scalars(
+            db.select(MentorshipRequest)
+            .where(MentorshipRequest.mentor_id == current_user.id)
+            .order_by(MentorshipRequest.requested_at.desc())
+        ).all()
+        mentorships = db.session.scalars(
+            db.select(Mentorship)
+            .where(
+                Mentorship.mentor_id == current_user.id,
+                Mentorship.status == "active",
+            )
+            .order_by(Mentorship.start_date.desc())
+        ).all()
+        recent_notifications = db.session.scalars(
+            db.select(Notification)
+            .where(Notification.user_id == current_user.id)
+            .order_by(Notification.created_at.desc())
+            .limit(5)
+        ).all()
+        context.update(
+            mentor_requests=requests,
+            pending_request_count=sum(item.status == "pending" for item in requests),
+            accepted_request_count=sum(item.status == "accepted" for item in requests),
+            active_mentorships=mentorships,
+            recent_notifications=recent_notifications,
+            unread_notification_count=sum(not item.is_read for item in recent_notifications),
+            mentor_profile=current_user.mentor_profile,
+        )
     return render_template("users/dashboard.html", **context)
 
 

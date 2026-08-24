@@ -49,6 +49,37 @@
     {% if recent_opportunities %}<div class="opportunity-compact-grid">{% for item in recent_opportunities %}<article class="opportunity-compact"><div><span class="badge badge-success">Active</span>{% if item.category %}<span class="badge badge-info">{{ item.category }}</span>{% endif %}</div><h3>{{ item.title }}</h3><p>{{ item.client.full_name }}</p><dl><div><dt>Budget</dt><dd>{{ '%.2f'|format(item.budget) if item.budget is not none else 'Open' }}</dd></div><div><dt>Deadline</dt><dd>{{ item.deadline.strftime('%d %b %Y') if item.deadline else 'Flexible' }}</dd></div></dl><a class="text-link" href="{{ url_for('opportunities.detail', opportunity_id=item.id) }}">View details <span aria-hidden="true">&rarr;</span></a></article>{% endfor %}</div>
     {% else %}<div class="compact-empty"><span class="empty-state-icon">{{ icon('briefcase') }}</span><h3>No active opportunities right now</h3><p>Check back soon for new freelance opportunities.</p><a class="btn-secondary" href="{{ url_for('opportunities.catalogue') }}">Explore Opportunities</a></div>{% endif %}
 </section>
+{% elif current_user.role_name == 'mentor' %}
+<header class="dashboard-page-header">
+    <div><p class="dashboard-eyebrow">Mentor workspace</p><h1>Welcome back, {{ current_user.full_name }}</h1><p>Review mentorship requests, support your active mentees, and keep your professional profile current.</p></div>
+    <a class="btn-primary" href="{{ url_for('mentorship.received_requests') }}">Review Requests</a>
+</header>
+<section class="learner-stat-grid" aria-label="Mentorship summary">
+    {% set profile_ready = mentor_profile and mentor_profile.professional_title and mentor_profile.expertise %}
+    {% set stats = [
+        ('document', 'Pending Requests', pending_request_count, 'awaiting response'),
+        ('users', 'Active Mentees', active_mentorships|length, 'current relationships'),
+        ('check', 'Accepted Requests', accepted_request_count, 'accepted in total'),
+        ('bell', 'Notifications', unread_notification_count, 'unread recently')
+    ] %}
+    {% for icon_name, label, value, detail in stats %}<article class="learner-stat-card"><span class="learner-stat-icon">{{ icon(icon_name) }}</span><div><p>{{ label }}</p><strong>{{ value }}</strong><span>{{ detail }}</span></div></article>{% endfor %}
+</section>
+<div class="dashboard-primary-grid">
+    <section class="dashboard-panel" aria-labelledby="mentor-requests-heading">
+        <div class="panel-heading"><div><p class="dashboard-eyebrow">Action centre</p><h2 id="mentor-requests-heading">Recent Requests</h2></div><a class="text-link" href="{{ url_for('mentorship.received_requests') }}">View all <span aria-hidden="true">&rarr;</span></a></div>
+        {% if mentor_requests %}<div class="mentor-dashboard-list">{% for item in mentor_requests[:4] %}<article><span class="learner-sidebar-avatar">{{ item.freelancer.full_name[:1]|upper }}</span><div><h3>{{ item.freelancer.full_name }}</h3><p>{{ item.message|truncate(90) if item.message else 'No introductory message provided.' }}</p><time datetime="{{ item.requested_at.isoformat() }}">{{ item.requested_at.strftime('%d %b %Y') }}</time></div><span class="badge {{ 'badge-success' if item.status == 'accepted' else 'badge-danger' if item.status == 'rejected' else 'badge-info' }}">{{ item.status|title }}</span></article>{% endfor %}</div>
+        {% else %}<div class="compact-empty"><span class="empty-state-icon">{{ icon('document') }}</span><h3>No mentorship requests yet</h3><p>New requests from learners will appear here.</p></div>{% endif %}
+    </section>
+    <section class="dashboard-panel" aria-labelledby="mentor-profile-heading">
+        <div class="panel-heading"><h2 id="mentor-profile-heading">Mentor Profile</h2><a class="text-link" href="{{ url_for('users.edit_mentor_profile') }}">Edit <span aria-hidden="true">&rarr;</span></a></div>
+        <div class="mentor-profile-summary"><span class="empty-state-icon">{{ icon('user') }}</span><span class="badge {{ 'badge-success' if profile_ready else 'badge-info' }}">{{ 'Profile ready' if profile_ready else 'Needs details' }}</span><h3>{{ mentor_profile.professional_title if mentor_profile and mentor_profile.professional_title else 'Add your professional title' }}</h3><p>{{ mentor_profile.expertise|truncate(150) if mentor_profile and mentor_profile.expertise else 'Describe your expertise so learners understand how you can support them.' }}</p><a class="btn-secondary" href="{{ url_for('users.edit_mentor_profile') }}">Update Mentor Profile</a></div>
+    </section>
+</div>
+<section class="dashboard-panel mt-6" aria-labelledby="mentor-mentees-heading">
+    <div class="panel-heading"><div><p class="dashboard-eyebrow">Active relationships</p><h2 id="mentor-mentees-heading">My Mentees</h2></div><a class="text-link" href="{{ url_for('mentorship.mentees') }}">View all <span aria-hidden="true">&rarr;</span></a></div>
+    {% if active_mentorships %}<div class="mentor-card-grid">{% for item in active_mentorships[:3] %}<article class="opportunity-compact"><span class="badge badge-success">Active</span><h3>{{ item.freelancer.full_name }}</h3><p>{{ item.freelancer.location or 'Location not provided' }}</p><div class="mt-3 flex flex-wrap gap-2">{% for user_skill in item.freelancer.skills[:3] %}<span class="badge badge-info">{{ user_skill.skill.name }}</span>{% else %}<span class="text-sm text-slate-500">Skills not added yet</span>{% endfor %}</div></article>{% endfor %}</div>
+    {% else %}<div class="compact-empty"><span class="empty-state-icon">{{ icon('users') }}</span><h3>No active mentees</h3><p>Accepted mentorship requests will create active relationships here.</p></div>{% endif %}
+</section>
 {% else %}
 <header><p class="text-sm font-bold uppercase tracking-wider text-teal-700">{{ dashboard.eyebrow }}</p><h1 class="mt-2 text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">Welcome back, {{ current_user.full_name }}</h1><p class="mt-3 max-w-3xl text-slate-600">{{ dashboard.description }}</p></header>
 <div class="mt-8 grid gap-6 md:grid-cols-2"><section class="card"><span class="badge badge-success">Account ready</span><h2 class="mt-4 text-xl font-bold">{{ dashboard.title }}</h2><p class="mt-2 text-sm leading-6 text-slate-600">Your secure {{ current_user.role_name }} account and role-specific workspace are active.</p></section><section class="card"><span class="badge badge-info">Next step</span><h2 class="mt-4 text-xl font-bold">{{ dashboard.next_title }}</h2><p class="mt-2 text-sm leading-6 text-slate-600">{{ dashboard.next_text }}</p></section></div>
