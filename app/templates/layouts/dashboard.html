@@ -9,7 +9,7 @@
 {% block content %}
 <div class="dashboard-shell {{ 'learner-shell' if current_user.role_name == 'freelancer' }}">
     <button id="dashboard-backdrop" class="dashboard-backdrop hidden lg:hidden" type="button" aria-label="Close dashboard navigation"></button>
-    <aside id="dashboard-sidebar" class="dashboard-sidebar hidden lg:block {{ 'learner-sidebar' if current_user.role_name in ['freelancer', 'mentor', 'client'] }}" aria-label="{{ current_user.role_name | title }} navigation">
+    <aside id="dashboard-sidebar" class="dashboard-sidebar hidden lg:block {{ 'learner-sidebar' if current_user.role_name in ['freelancer', 'mentor', 'client', 'administrator'] }}" aria-label="{{ current_user.role_name | title }} navigation">
         {% if current_user.role_name == 'freelancer' %}
         <div class="learner-sidebar-heading"><span class="learner-sidebar-avatar">{{ current_user.full_name[:1]|upper }}</span><div><strong>{{ current_user.full_name }}</strong><span>Freelancer</span></div></div>
         <nav class="learner-navigation">
@@ -48,12 +48,18 @@
         </nav>
         <form class="learner-sidebar-logout" method="post" action="{{ url_for('auth.logout') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button type="submit">{{ icon('arrow') }}<span>Log out</span></button></form>
         {% else %}
-        <p class="mb-3 px-3 text-xs font-bold uppercase tracking-wider text-slate-500">{{ current_user.role_name | title }}</p>
-        <nav class="space-y-1">
-            <a class="sidebar-link {{ 'sidebar-link-active' if request.endpoint == 'users.dashboard' else 'text-slate-700 hover:bg-slate-100' }}" href="{{ url_for('users.dashboard') }}">Dashboard</a>
-            <a class="sidebar-link" href="{{ url_for('notifications.index') }}">Notifications</a>
-            <a class="sidebar-link" href="{{ url_for('users.profile') }}">Profile</a><a class="sidebar-link" href="{{ url_for('admin.dashboard') }}">Statistics Dashboard</a><a class="sidebar-link" href="{{ url_for('admin.users') }}">Users</a><a class="sidebar-link" href="{{ url_for('admin.skills') }}">Skills</a><a class="sidebar-link" href="{{ url_for('admin.learning') }}">Learning Content</a><a class="sidebar-link" href="{{ url_for('opportunities.oversight') }}">Opportunities</a><a class="sidebar-link" href="{{ url_for('applications.oversight') }}">Applications</a><a class="sidebar-link" href="{{ url_for('admin.mentorships') }}">Mentorships</a>
+        <div class="learner-sidebar-heading"><span class="learner-sidebar-avatar">{{ current_user.full_name[:1]|upper }}</span><div><strong>{{ current_user.full_name }}</strong><span>Administrator</span></div></div>
+        <nav class="learner-navigation">
+            {{ mentor_link('admin.dashboard', 'Dashboard', 'dashboard', request.endpoint == 'admin.dashboard') }}
+            {{ mentor_link('admin.users', 'Users', 'users', request.endpoint in ['admin.users','admin.toggle_user']) }}
+            {{ mentor_link('admin.skills', 'Skills', 'skills', request.endpoint in ['admin.skills','admin.create_skill','admin.edit_skill']) }}
+            {{ mentor_link('admin.learning', 'Learning Content', 'book', request.endpoint and request.endpoint in ['admin.learning','admin.create_category','admin.edit_category','admin.create_course','admin.edit_course','admin.create_lesson','admin.edit_lesson']) }}
+            {{ mentor_link('opportunities.oversight', 'Opportunities', 'briefcase', request.endpoint and request.endpoint.startswith('opportunities.')) }}
+            {{ mentor_link('applications.oversight', 'Applications', 'document', request.endpoint and request.endpoint.startswith('applications.')) }}
+            {{ mentor_link('admin.mentorships', 'Mentorships', 'users', request.endpoint == 'admin.mentorships') }}
+            {{ mentor_link('notifications.index', 'Notifications', 'bell', request.endpoint and request.endpoint.startswith('notifications.')) }}
         </nav>
+        <form class="learner-sidebar-logout" method="post" action="{{ url_for('auth.logout') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button type="submit">{{ icon('arrow') }}<span>Log out</span></button></form>
         {% endif %}
     </aside>
     <section class="dashboard-content">

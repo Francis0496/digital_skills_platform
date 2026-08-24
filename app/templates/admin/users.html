@@ -1,42 +1,4 @@
-{% extends "layouts/dashboard.html" %}{% block title %}User Management{%
-endblock %}{% block dashboard_content %}
-<h1 class="text-3xl font-bold">Users</h1>
-<form class="card mt-6 flex gap-3" method="get">
-  <label class="sr-only" for="user-search">Search users</label>
-  <input
-    id="user-search"
-    class="form-input mt-0"
-    name="q"
-    value="{{ query }}"
-    placeholder="Search name or email"
-  /><button class="btn-primary">Search</button>
-</form>
-<div class="mt-6 space-y-3">
-  {% for user in users %}
-  <article
-    class="card flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
-  >
-    <div>
-      <span class="badge badge-info">{{ user.role_name|title }}</span>
-      <h2 class="mt-2 font-bold">{{ user.full_name }}</h2>
-      <p class="text-sm text-slate-500">
-        {{ user.email }} · {{ 'Active' if user.is_active else 'Inactive' }}
-      </p>
-    </div>
-    {% if user.id != current_user.id %}
-    <form
-      method="post"
-      action="{{ url_for('admin.toggle_user',user_id=user.id) }}"
-      data-confirm="Change this account status?"
-    >
-      {{ action_form.hidden_tag() }}<button
-        class="{{ 'btn-danger' if user.is_active else 'btn-primary' }}"
-      >
-        {{ 'Deactivate' if user.is_active else 'Activate' }}
-      </button>
-    </form>
-    {% endif %}
-  </article>
-  {% endfor %}
-</div>
-{% endblock %}
+{% extends "layouts/dashboard.html" %}{% block title %}User Management | Digital Skills Platform{% endblock %}{% block dashboard_content %}
+<header><p class="dashboard-eyebrow">Administration</p><h1 class="mt-2 text-3xl font-bold">User management</h1><p class="mt-2 text-slate-600">Search registered accounts and manage their active status.</p></header>
+<form class="admin-search" method="get"><label class="form-label" for="user-search">Search users</label><div><input id="user-search" class="form-input" name="q" value="{{ query }}" placeholder="Search by name or email"><button class="btn-primary">Search</button>{% if query %}<a class="btn-secondary" href="{{ url_for('admin.users') }}">Clear</a>{% endif %}</div></form>
+{% if users %}<div class="admin-table-wrap"><table class="admin-table"><thead><tr><th scope="col">User</th><th scope="col">Role</th><th scope="col">Joined</th><th scope="col">Status</th><th scope="col"><span class="sr-only">Account action</span></th></tr></thead><tbody>{% for user in users %}<tr><td><div class="admin-user-cell"><span class="learner-sidebar-avatar">{{ user.full_name[:1]|upper }}</span><span><strong>{{ user.full_name }}</strong><small>{{ user.email }}</small></span></div></td><td data-label="Role"><span class="badge badge-info">{{ user.role_name|title }}</span></td><td data-label="Joined"><time datetime="{{ user.created_at.isoformat() }}">{{ user.created_at.strftime('%d %b %Y') }}</time></td><td data-label="Status"><span class="badge {{ 'badge-success' if user.is_active else 'badge-danger' }}">{{ 'Active' if user.is_active else 'Inactive' }}</span></td><td data-label="Action">{% if user.id != current_user.id %}<form method="post" action="{{ url_for('admin.toggle_user',user_id=user.id) }}" data-confirm="Change this account status?">{{ action_form.hidden_tag() }}<button class="{{ 'btn-danger' if user.is_active else 'btn-primary' }}">{{ 'Deactivate' if user.is_active else 'Activate' }}</button></form>{% else %}<span class="text-sm text-slate-500">Current account</span>{% endif %}</td></tr>{% endfor %}</tbody></table></div>{% else %}<div class="empty-state dashboard-empty"><h2 class="font-bold">No users match this search</h2><p class="mt-2 text-sm text-slate-600">Try a different name or email address.</p><a class="btn-secondary mt-5" href="{{ url_for('admin.users') }}">Clear Search</a></div>{% endif %}{% endblock %}

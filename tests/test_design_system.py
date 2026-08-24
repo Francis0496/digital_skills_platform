@@ -65,7 +65,7 @@ def test_design_02_dashboard_requires_authentication(client):
         ("freelancer", b"My Courses", b"Post Opportunity"),
         ("mentor", b"My Mentees", b"My Applications"),
         ("client", b"My Opportunities", b"Learning Progress"),
-        ("administrator", b"Statistics", b"My Mentees"),
+        ("administrator", b"Learning Content", b"My Mentees"),
     ),
 )
 def test_design_03_dashboard_navigation_matches_role(

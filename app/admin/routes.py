@@ -12,7 +12,8 @@ from .forms import ActionForm, CategoryForm, CourseForm, LessonForm, SkillAdminF
 @roles_required("administrator")
 def dashboard():
     counts={"users":db.session.scalar(db.select(db.func.count(User.id))),"freelancers":_role_count("freelancer"),"mentors":_role_count("mentor"),"clients":_role_count("client"),"courses":db.session.scalar(db.select(db.func.count(Course.id))),"opportunities":db.session.scalar(db.select(db.func.count(FreelanceOpportunity.id)).where(FreelanceOpportunity.status=="active")),"applications":db.session.scalar(db.select(db.func.count(JobApplication.id))),"mentorships":db.session.scalar(db.select(db.func.count(Mentorship.id)).where(Mentorship.status=="active"))}
-    return render_template("admin/dashboard.html",counts=counts)
+    recent_users=db.session.scalars(db.select(User).order_by(User.created_at.desc()).limit(5)).all()
+    return render_template("admin/dashboard.html",counts=counts,recent_users=recent_users)
 
 @bp.get("/users")
 @roles_required("administrator")

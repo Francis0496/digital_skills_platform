@@ -40,3 +40,15 @@ def test_admin_04_skill_create_edit_and_duplicate(client,user_factory):
 
 def test_admin_05_mentorship_oversight(client,user_factory):
     user_factory(role_name="administrator"); freelancer=user_factory(email="free@example.com"); mentor=user_factory(email="mentor@example.com",role_name="mentor"); db.session.add(MentorshipRequest(freelancer=freelancer,mentor=mentor)); db.session.commit(); login(client); response=client.get("/admin/mentorships"); assert response.status_code==200; assert b"Mentorship oversight" in response.data
+
+def test_admin_06_workspace_navigation_and_user_table(client,user_factory):
+    user_factory(role_name="administrator")
+    user_factory(email="client@example.com", role_name="client")
+    login(client)
+    dashboard = client.get("/admin/")
+    assert dashboard.status_code == 200
+    for label in (b"Users", b"Skills", b"Learning Content", b"Opportunities", b"Applications", b"Mentorships", b"Notifications"):
+        assert label in dashboard.data
+    users = client.get("/admin/users")
+    assert b'<table class="admin-table">' in users.data
+    assert b'name="csrf_token"' in users.data
