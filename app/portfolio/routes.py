@@ -5,7 +5,8 @@ from flask_login import current_user
 from PIL import Image, ImageOps, UnidentifiedImageError
 from app.auth.decorators import roles_required
 from app.extensions import db
-from app.models import Portfolio, PortfolioProject, User
+from app.matching.service import suggest_skills_for_text
+from app.models import Portfolio, PortfolioProject, Skill, User
 from . import bp
 from .forms import ConfirmForm, PortfolioForm, ProjectForm
 
@@ -73,7 +74,20 @@ def _project_form(portfolio, project):
             db.session.add(project); db.session.commit()
             if new_image: _remove_image(old)
             flash("Project saved.", "success"); return redirect(url_for("portfolio.mine"))
-    return render_template("portfolio/project_form.html", form=form, project=project if project.id else None)
+    description_text = form.description.data or project.description or ""
+    available_skills = db.session.scalars(db.select(Skill).order_by(Skill.name)).all()
+    have_skill_ids = {user_skill.skill_id for user_skill in current_user.skills}
+    suggested_skills = [
+        skill
+        for skill in suggest_skills_for_text(description_text, known_skills=available_skills)
+        if skill.id not in have_skill_ids
+    ]
+    return render_template(
+        "portfolio/project_form.html",
+        form=form,
+        project=project if project.id else None,
+        suggested_skills=suggested_skills,
+    )
 
 def _ensure_owner(project):
     if project.portfolio.user_id != current_user.id: abort(403)

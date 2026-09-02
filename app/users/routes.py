@@ -8,6 +8,7 @@ from flask import (
     flash,
     redirect,
     render_template,
+    request,
     send_from_directory,
     url_for,
 )
@@ -17,6 +18,7 @@ from sqlalchemy.exc import IntegrityError
 
 from app.auth.decorators import roles_required
 from app.extensions import db
+from app.matching.service import recommend_opportunities_for_user, suggest_skills_for_text
 from app.models import (
     FreelanceOpportunity,
     JobApplication,
@@ -119,8 +121,21 @@ def dashboard():
             .order_by(Notification.created_at.desc())
             .limit(4)
         ).all()
+        candidate_opportunities = db.session.scalars(
+            db.select(FreelanceOpportunity).where(
+                FreelanceOpportunity.status == "active",
+                db.or_(
+                    FreelanceOpportunity.deadline.is_(None),
+                    FreelanceOpportunity.deadline >= date.today(),
+                ),
+            )
+        ).all()
+        recommended_opportunities = recommend_opportunities_for_user(
+            current_user, candidate_opportunities, limit=3
+        )
         context.update(
             enrollments=enrollments,
+            recommended_opportunities=recommended_opportunities,
             continue_enrollment=next(
                 (
                     item
@@ -282,6 +297,10 @@ def skills():
     available_skills = db.session.scalars(db.select(Skill).order_by(Skill.name)).all()
     form.skill_id.choices = [(skill.id, skill.name) for skill in available_skills]
 
+    suggest_id = request.args.get("suggest", type=int)
+    if request.method == "GET" and suggest_id in {skill.id for skill in available_skills}:
+        form.skill_id.data = suggest_id
+
     if form.validate_on_submit():
         duplicate = db.session.scalar(
             db.select(UserSkill).filter_by(
@@ -313,8 +332,18 @@ def skills():
         .join(UserSkill.skill)
         .order_by(Skill.name)
     ).all()
+    existing_skill_ids = {user_skill.skill_id for user_skill in user_skills}
+    suggested_skills = [
+        skill
+        for skill in suggest_skills_for_text(current_user.bio or "", known_skills=available_skills)
+        if skill.id not in existing_skill_ids
+    ]
     return render_template(
-        "users/skills.html", form=form, user_skills=user_skills, remove_form=ConfirmForm()
+        "users/skills.html",
+        form=form,
+        user_skills=user_skills,
+        remove_form=ConfirmForm(),
+        suggested_skills=suggested_skills,
     )
 
 

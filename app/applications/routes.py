@@ -3,6 +3,7 @@ from flask_login import current_user
 from sqlalchemy.exc import IntegrityError
 from app.auth.decorators import roles_required
 from app.extensions import db
+from app.matching.service import compute_application_match
 from app.models import FreelanceOpportunity, JobApplication
 from . import bp
 from .forms import ApplicationForm, StatusForm
@@ -18,6 +19,7 @@ def apply(opportunity_id):
         flash("You have already applied to this opportunity.", "error")
         return redirect(url_for("applications.detail", application_id=existing.id))
     form = ApplicationForm()
+    match = compute_application_match(current_user, opportunity, form.cover_message.data or "")
     if form.validate_on_submit():
         application = JobApplication(opportunity=opportunity, freelancer=current_user, cover_message=form.cover_message.data.strip(), proposed_amount=form.proposed_amount.data)
         db.session.add(application)
@@ -28,7 +30,7 @@ def apply(opportunity_id):
             return redirect(url_for("opportunities.detail", opportunity_id=opportunity.id))
         flash("Application submitted.", "success")
         return redirect(url_for("applications.detail", application_id=application.id))
-    return render_template("applications/form.html", form=form, opportunity=opportunity)
+    return render_template("applications/form.html", form=form, opportunity=opportunity, match=match)
 
 @bp.get("/mine")
 @roles_required("freelancer")

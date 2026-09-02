@@ -63,3 +63,18 @@ document.querySelectorAll("form[data-confirm]").forEach((form) => {
         if (!window.confirm(form.dataset.confirm)) event.preventDefault();
     });
 });
+
+document.querySelectorAll("[data-skill-suggestions]").forEach((panel) => {
+    const select = document.getElementById(panel.dataset.select);
+    if (!select) return;
+    panel.querySelectorAll("[data-suggest-skill]").forEach((chip) => {
+        chip.addEventListener("click", (event) => {
+            const id = chip.dataset.suggestSkill;
+            if ([...select.options].some((option) => option.value === id)) {
+                event.preventDefault();
+                select.value = id;
+                select.focus();
+            }
+        });
+    });
+});

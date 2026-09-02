@@ -54,7 +54,27 @@
 
 **Reason:** Payment introduces regulatory, security, and implementation complexity beyond the approved undergraduate prototype scope.
 
-## ADR-011: No AI Matching in Prototype
-**Decision:** Exclude AI-based job or mentor recommendations.
+## ADR-011: Scoped Offline TF-IDF Matching (Revised)
+**Decision:** Add one small, self-contained AI/NLP module (`app/matching/service.py`)
+covering exactly three features: (1) TF-IDF + cosine-similarity ranking of
+opportunities for a freelancer's "Recommended for you" list, (2) keyword-based
+Skill-tag suggestions from bio/portfolio-project free text, and (3) a
+cover-letter/opportunity match score with missing-skill feedback on the
+application form. No external LLM API is used; scikit-learn's TfidfVectorizer
+runs fully offline against data already in the platform's own database.
 
-**Reason:** The core project can meet its objectives without adding an unnecessary feature that increases risk and scope.
+**Reason:** The original ADR-011 excluded AI matching to control scope. A
+single, small, demoable, and rigorously evaluable NLP module (measured via
+precision@k and skill-overlap tests, see `tests/test_matching.py`) is a
+defensible addition for the dissertation's analysis/evaluation chapters
+without expanding the system's surface area: no new blueprint (beyond a
+package marker), no new database tables or migrations, and no third-party
+network dependency. A skill-gap course recommender was considered and
+explicitly deferred — it would require a new skills-per-course schema and is
+out of scope for this addition.
+
+**Note:** This directly reverses an explicit exclusion in
+`Digital_Skills_Freelancing_Platform_Master_Development_Specification.docx`
+§3.2 ("AI-based job matching or automated recommendation engines"). See
+`SCOPE_AMENDMENTS.md` (Amendment 001) for the full justification and
+project-owner approval record required by `AGENTS.md`.
